@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/user.model';
+import { User } from '../models/user.model.js';
 
 export const protect = async (
   req: Request,
@@ -20,6 +20,7 @@ export const protect = async (
     if (!user) return res.status(401).json({ message: 'User not found' });
 
     req.user = user;
+    req.userId = user._id.toString();
     next();
   } catch {
     res.status(401).json({ message: 'Token expired or invalid' });
