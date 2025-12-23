@@ -108,7 +108,7 @@ export const verification = async (req: Request, res: Response) => {
   }
 };
 
-// LogIn User
+//  LogIn User
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -147,11 +147,20 @@ export const loginUser = async (req: Request, res: Response) => {
 
     await Session.create({ userId: user._id });
 
-    const accessToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY!, {
-      expiresIn: '1h',
-    });
-    const refreshToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY!, {
-      expiresIn: '5h',
+    const accessToken = generateAccessToken(user._id.toString());
+    const refreshToken = generateRefreshToken(user._id.toString());
+
+    const decoded = jwt.decode(refreshToken) as jwt.JwtPayload;
+
+    if (!decoded || !decoded.jti) {
+      return res
+        .status(500)
+        .json({ message: 'Failed to decode refresh token' });
+    }
+
+    await RefreshToken.create({
+      user: user._id,
+      jti: decoded.jti,
     });
 
     user.isLoggedIn = true;
