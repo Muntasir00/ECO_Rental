@@ -7,7 +7,7 @@ const ACCESS_EXPIRE: SignOptions['expiresIn'] = process.env
 const REFRESH_EXPIRE: SignOptions['expiresIn'] = process.env
   .REFRESH_TOKEN_EXPIRE as SignOptions['expiresIn'];
 
-export const generateAccessToken = (userId: string) => {
+export const generateAccessToken = (userId: string, role: string) => {
   const access_secret = process.env.JWT_ACCESS_SECRET;
   if (!access_secret) throw new Error('JWT_ACCESS_SECRET not set');
 
@@ -16,6 +16,7 @@ export const generateAccessToken = (userId: string) => {
   return jwt.sign(
     {
       id: userId,
+      role,
       type: 'access',
     },
     access_secret,

@@ -4,12 +4,12 @@ import jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
 import { Session } from '../models/session.model.js';
 import { User } from '../models/user.model.js';
-import { verifyMail } from '../services/verifyMail.js';
-import { sendOtpMail } from '../services/sendOtpMail.js';
+import { verifyMail } from '../services/Auth/verifyMail.js';
+import { sendOtpMail } from '../services/Auth/sendOtpMail.js';
 import {
   generateAccessToken,
   generateRefreshToken,
-} from '../services/token.service.js';
+} from '../services/Auth/token.service.js';
 import RefreshToken from '../models/refreshToken.model.js';
 
 // Register User
@@ -32,6 +32,7 @@ export const registerUser = async (req: Request, res: Response) => {
       username,
       email,
       password: hashedPassword,
+      role: 'user',
     });
 
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY!, {
@@ -147,7 +148,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
     await Session.create({ userId: user._id });
 
-    const accessToken = generateAccessToken(user._id.toString());
+    const accessToken = generateAccessToken(user._id.toString(), user.role);
     const refreshToken = generateRefreshToken(user._id.toString());
 
     const decoded = jwt.decode(refreshToken) as jwt.JwtPayload;
@@ -383,7 +384,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     storedToken.isRevoked = true;
     await storedToken.save();
 
-    const newAccessToken = generateAccessToken(payload.id);
+    const newAccessToken = generateAccessToken(payload.id, payload.role);
     const newRefreshToken = generateRefreshToken(payload.id);
 
     const decoded = jwt.decode(newRefreshToken) as jwt.JwtPayload | null;
