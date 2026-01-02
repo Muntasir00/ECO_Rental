@@ -60,8 +60,8 @@ export const endpoints = {
     changePassword: '/user/change-password/:email',
     logout: '/user/logout',
   },
-  content: {
-    generate: '/app/generate',
-    status: (jobId: string) => `/app/job/${jobId}`,
-  },
+  // content: {
+  //   generate: '/app/generate',
+  //   status: (jobId: string) => `/app/job/${jobId}`,
+  // },
 };

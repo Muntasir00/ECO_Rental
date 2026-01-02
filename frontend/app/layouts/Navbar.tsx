@@ -15,11 +15,11 @@ import { useAuthContext } from 'app/auth/hooks';
 
 const Navbar = () => {
   const router = useRouter();
-  
-  const {authenticated, loading } = useAuthContext();
 
-  // const authenticated = true; // Replace with actual authentication status
-  
+  const { authenticated, loading } = useAuthContext();
+
+  const { user = null } = useAuthContext();
+  console.log(user);
 
   const handleSignOut = async () => {
     try {
@@ -35,15 +35,24 @@ const Navbar = () => {
   return (
     <div className='fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-md border-b border-gray-200'>
       <div className='max-w-[1920px]  flex justify-between items-center px-6 py-3 mx-[100px]'>
-
         <div className='flex gap-3 items-center justify-center'>
-          <img
-            src='/image/eco_logo.svg'
-            alt=''
-            // className='w-12 h-12'
-          />
-          
+          <img src='/image/eco_logo.svg' alt='' />
         </div>
+
+        <ul className='flex justify-between items-center text-[16px] font-normal text-[#000000] gap-10 font-manrope'>
+          <li>
+            <a href='/'>Home</a>
+          </li>
+          <li>
+            <a href='/blogs'>Blogs</a>
+          </li>
+          <li>
+            <a href='/about'>About</a>
+          </li>
+          <li>
+            <a href='/contact'>Contact Us</a>
+          </li>
+        </ul>
 
         <div>
           {loading ? null : authenticated ? (
@@ -69,16 +78,16 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className='flex gap-2'>
+            <div className='flex gap-2 font-mulish'>
               <button
                 onClick={() => router.push(paths.auth.jwt.signIn)}
-                className='px-3 py-1 rounded-md text-sm border'
+                className='px-[18px] py-[9px] rounded-xl text-[16px] text-[#E14453] border border-[#E14453] font-normal'
               >
                 Sign In
               </button>
               <button
                 onClick={() => router.push(paths.auth.jwt.signUp)}
-                className='px-3 py-1 rounded-md text-sm bg-green-500 text-white'
+                className='px-[18px] py-[9px] rounded-xl text-[16px] bg-[#E14453]  text-white font-normal'
               >
                 Sign Up
               </button>

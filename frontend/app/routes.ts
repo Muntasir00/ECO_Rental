@@ -15,7 +15,7 @@ export default [
 
     // Protected routes: dashboard and other app pages
     layout('layouts/protected.tsx', [
-      route('/dashboard', 'pages/dashboard/overview.tsx'),
+      route('/home', 'pages/Home/Homeview.tsx'),
       // route('/dashboard/overview', 'pages/dashboard/overview.tsx'),
       // route('/projects', 'pages/projects/index.tsx'),
       // route('/settings', 'pages/settings/index.tsx'),
@@ -26,4 +26,5 @@ export default [
     //   route('/terms', 'pages/terms.tsx'),
     // ]),
   ]),
+  // route('*', 'pages/404.tsx'),
 ] satisfies RouteConfig;

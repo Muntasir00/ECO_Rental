@@ -3,7 +3,7 @@ import { paramCase } from '../utils/change-case';
 
 const ROOTS = {
   AUTH: '/auth',
-  DASHBOARD: '/dashboard',
+  Home: '/home',
 };
 
 // ----------------------------------------------------------------------
@@ -24,7 +24,7 @@ export const paths = {
   },
 
   // DASHBOARD
-  dashboard: {
-    root: ROOTS.DASHBOARD,
+  home: {
+    root: ROOTS.Home,
   },
 };

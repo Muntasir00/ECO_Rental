@@ -34,7 +34,7 @@ type Pages = {
   "/auth/verify-otp": {
     params: {};
   };
-  "/dashboard": {
+  "/home": {
     params: {};
   };
 };
@@ -42,7 +42,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/dashboard";
+    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home";
   };
   "pages/index.tsx": {
     id: "pages/index";
@@ -50,7 +50,7 @@ type RouteFiles = {
   };
   "layouts/main.tsx": {
     id: "layouts/main";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/dashboard";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home";
   };
   "layouts/guest.tsx": {
     id: "layouts/guest";
@@ -82,11 +82,11 @@ type RouteFiles = {
   };
   "layouts/protected.tsx": {
     id: "layouts/protected";
-    page: "/dashboard";
+    page: "/home";
   };
-  "pages/dashboard/overview.tsx": {
-    id: "pages/dashboard/overview";
-    page: "/dashboard";
+  "pages/Home/Homeview.tsx": {
+    id: "pages/Home/Homeview";
+    page: "/home";
   };
 };
 
@@ -102,5 +102,5 @@ type RouteModules = {
   "pages/auth/forgot-password": typeof import("./app/pages/auth/forgot-password.tsx");
   "pages/auth/verify-otp": typeof import("./app/pages/auth/verify-otp.tsx");
   "layouts/protected": typeof import("./app/layouts/protected.tsx");
-  "pages/dashboard/overview": typeof import("./app/pages/dashboard/overview.tsx");
+  "pages/Home/Homeview": typeof import("./app/pages/Home/Homeview.tsx");
 };

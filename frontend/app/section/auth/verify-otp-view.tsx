@@ -70,7 +70,11 @@ export default function VerifyOtp() {
   return (
     <>
       <Form methods={methods} onSubmit={onSubmit}>
-        <div className='flex justify-center items-center h-screen bg-green-50 px-4'>
+            <div className='py-20 px-30'>
+
+      <div className="h-[920px] bg-[url('/image/hero.jpg')] bg-cover bg-center rounded-4xl py-20 px-55 flex items-center justify-center">
+
+      <div className='bg-[#FFFFFF73] backdrop-blur-3xl flex flex-col rounded-[18px] gap-12 border border-[#FFFFFF] justify-center items-center mx-auto py-10 px-30'>
           <Card className='max-w-md w-full'>
             <CardHeader>
               <CardTitle>OTP Verification</CardTitle>
@@ -101,11 +105,12 @@ export default function VerifyOtp() {
             </CardContent>
 
             <CardFooter>
-              <Button type='submit' disabled={isSubmitting} className='w-full'>
-                {isSubmitting ? 'Verifying…' : 'Verify OTP'}
-              </Button>
+               <Button type='submit' disabled={isSubmitting} className='w-full py-3 px-6 bg-[#E14453]'>     {isSubmitting ? 'Submitting…' : 'Log in now'}
+            </Button>
             </CardFooter>
           </Card>
+        </div>
+        </div>
         </div>
       </Form>
     </>

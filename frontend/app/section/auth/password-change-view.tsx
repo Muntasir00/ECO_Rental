@@ -28,6 +28,7 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card';
+import { Checkbox } from '~/components/ui/checkbox';
 
 // ----------------------------------------------------------------------
 
@@ -98,34 +99,41 @@ export function PasswordChangeView() {
   });
 
   const renderForm = (
-    <div className='flex justify-center items-center h-screen bg-green-50 px-4'>
-      <div className='flex items-stretch w-full max-w-4xl h-[560px] bg-white p-4 gap-5'>
-        {/* Left side (Image) */}
-        <div className='flex-1 h-full'>
-          <img
-            src='/image/login-img.png'
-            alt='login'
-            className='w-full h-full object-cover rounded'
-          />
-        </div>
+    <div className='py-20 px-30'>
+      <div className="h-[920px] bg-[url('/image/hero.jpg')] bg-cover bg-center rounded-4xl py-20 px-55">
+        <div className='bg-[#FFFFFF73] backdrop-blur-3xl flex flex-col rounded-[18px] gap-12 border border-[#FFFFFF] justify-center items-center mx-auto py-6'>
+          <div className='flex gap-4 justify-center items-center'>
+            <img src='/image/logo.svg' alt='' />
+            <div className='flex flex-col gap-2'>
+              {/* <p className='text-[#FFFFFF] text-3xl'></p> */}
+              <img src='/image/logo_text.svg' alt='' />
+              <img src='/image/logo_text_un.svg' alt='' className='h-3' />
+            </div>
+          </div>
 
-        {/* Right side (Card) */}
-        <Card className='flex-1 '>
-          <CardHeader>
-            <CardTitle>Enter password and Confirm Password</CardTitle>
-          </CardHeader>
+          <div className='flex flex-col gap-3 justify-center items-center'>
+            <p className='text-[40px] text-[#E14453] font-semibold text-center font-manrope'>
+              Welcome Back!
+            </p>
+            <p className='font-normal text-[18px] font-manrope text-[#FFFFFF]'>
+              Change your password to continue
+            </p>
 
-          <CardContent>
-            <div className='flex flex-col gap-6'>
-              <div className='grid gap-2'>
-                <Label htmlFor='email' className='mb-1'>
-                  Password
+            {/* start */}
+            <div className='flex flex-col gap-7 items-start w-full'>
+              <div className='grid gap-2 w-full'>
+                <Label
+                  htmlFor='password'
+                  className='mb-1 text-white font-inter-tight font-normal text-[12px]'
+                >
+                  New Password
                 </Label>
                 <div className='flex gap-2'>
                   <Input
-                    id='newPassword'
+                    id='password'
                     type='password'
-                    placeholder='New password'
+                    autoComplete='current-password'
+                    placeholder='Password'
                     {...register('newPassword')}
                     className='w-full'
                   />
@@ -136,15 +144,20 @@ export function PasswordChangeView() {
                   </p>
                 )}
               </div>
-              <div className='grid gap-2'>
-                <Label htmlFor='password' className='mb-1'>
+
+              <div className='grid gap-2 w-full'>
+                <Label
+                  htmlFor='password'
+                  className='mb-1 text-white font-inter-tight font-normal text-[12px]'
+                >
                   Confirm Password
                 </Label>
                 <div className='flex gap-2'>
                   <Input
-                    id='confirmPassword'
+                    id='password'
                     type='password'
-                    placeholder='Confirm Password'
+                    autoComplete='current-password'
+                    placeholder='Password'
                     {...register('confirmPassword')}
                     className='w-full'
                   />
@@ -155,19 +168,42 @@ export function PasswordChangeView() {
                   </p>
                 )}
               </div>
-              {/* Error alert */}
-              {errorMsg ? (
-                <p className='text-sm text-destructive'>{errorMsg}</p>
-              ) : null}
-            </div>
-          </CardContent>
 
-          <CardFooter className='flex-col gap-2'>
-            <Button type='submit' disabled={isSubmitting} className='w-full'>
-              {isSubmitting ? 'Submitting…' : 'Change Password'}
-            </Button>
-          </CardFooter>
-        </Card>
+              <Button
+                type='submit'
+                disabled={isSubmitting}
+                className='w-full py-3 px-6 bg-[#E14453]'
+              >
+                {' '}
+                {isSubmitting ? 'Submitting…' : 'Log in now'}
+              </Button>
+            </div>
+
+            <p className='font-normal font-inter-tight text-[14px] text-[#4F4F52] leading-[150%]'>
+              or login with
+            </p>
+
+            <div className='flex gap-3'>
+              <div className='bg-[#FFCFD4] py-2 px-5 rounded-[12px] border-[1.5px] border-[#E7E7E7]'>
+                <p className='text-[16px] text-[#545454] flex gap-1'>
+                  <img src='/image/google.svg' alt='' /> Google
+                </p>
+              </div>
+
+              <div className='bg-[#FFCFD4] py-2 px-5 rounded-[12px] border-[1.5px] border-[#E7E7E7]'>
+                <p className='text-[16px] text-[#545454] flex gap-1'>
+                  <img src='/image/apple.svg' alt='' /> Apple
+                </p>
+              </div>
+            </div>
+
+            <p className='font-normal font-inter-tight text-[14px] text-[#FFFFFF] '>
+              Back to {'  '}
+              <a href={paths.auth.jwt.signIn}>Login {'  '}</a>
+              now.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

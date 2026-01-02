@@ -6,19 +6,27 @@ import adminRoutes from './routes/admin.routes.js';
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:5174', credentials: true }));
+
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/blogs', (await import('./routes/blog.routes.js')).default);
 
 // Global error handler
-
-app.use((req, res, next) => {
-  console.log('Headers:', req.headers['content-type']);
-  next();
-});
-
 app.use(
   (
     err: any,
@@ -27,7 +35,7 @@ app.use(
     next: express.NextFunction
   ) => {
     console.error(err.stack);
-    res.status(500).json({ message: 'Server:Something went wrong!' });
+    res.status(500).json({ message: 'Server: Something went wrong!' });
   }
 );
 

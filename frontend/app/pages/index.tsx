@@ -11,7 +11,7 @@ export default function IndexRedirect() {
   useEffect(() => {
     if (loading) return;
     if (authenticated) {
-      router.replace(paths.dashboard.root);
+      router.replace(paths.home.root);
     } else {
       router.replace(paths.auth.jwt.signIn);
     }

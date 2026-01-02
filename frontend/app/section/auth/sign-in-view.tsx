@@ -19,15 +19,7 @@ import { AlertCircleIcon } from 'lucide-react';
 import { Input } from '~/components/ui/input';
 import { Button } from '~/components/ui/button';
 import { Label } from '~/components/ui/label';
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '~/components/ui/card';
+import { Checkbox } from '~/components/ui/checkbox';
 
 // ----------------------------------------------------------------------
 
@@ -78,7 +70,7 @@ export function SignInView() {
       });
 
       initSession?.(dataRes.user, dataRes.accessToken);
-      router.push(paths.dashboard.root);
+      router.push(paths.home.root);
     } catch (error: any) {
       const errMsg =
         error?.response?.data?.message ||
@@ -90,37 +82,41 @@ export function SignInView() {
   });
 
   const renderForm = (
-    <div className='flex justify-center items-center h-screen bg-green-50 px-4'>
-      <div className='flex items-stretch w-full max-w-4xl h-[560px] bg-white p-4 gap-5'>
-        {/* Left side (Image) */}
-        <div className='flex-1 h-full'>
-          <img
-            src='/image/login-img.png'
-            alt='login'
-            className='w-full h-full object-cover rounded'
-          />
-        </div>
+    <div className='py-20 px-30'>
+      <div className="h-[920px] bg-[url('/image/hero.jpg')] bg-cover bg-center rounded-4xl py-20 px-55">
+        <div className='bg-[#FFFFFF73] backdrop-blur-3xl flex flex-col rounded-[18px] gap-12 border border-[#FFFFFF] justify-center items-center mx-auto py-6'>
+          <div className='flex gap-4 justify-center items-center'>
+            <img src='/image/logo.svg' alt='' />
+            <div className='flex flex-col gap-2'>
+              {/* <p className='text-[#FFFFFF] text-3xl'></p> */}
+              <img src='/image/logo_text.svg' alt='' />
+              <img src='/image/logo_text_un.svg' alt='' className='h-3' />
+            </div>
+          </div>
 
-        {/* Right side (Card) */}
-        <Card className='flex-1 '>
-          <CardHeader>
-            <CardTitle>Let's Get Started</CardTitle>
-            <CardDescription>
-              Hi! Please enter your login information below to access the panel
-            </CardDescription>
-          </CardHeader>
+          <div className='flex flex-col gap-3 justify-center items-center'>
+            <p className='text-[40px] text-[#E14453] font-semibold text-center font-manrope'>
+              Welcome Back!
+            </p>
+            <p className='font-normal text-[18px] font-manrope text-[#FFFFFF]'>
+              Log in to Your Account
+            </p>
 
-          <CardContent>
-            <div className='flex flex-col gap-6'>
-              <div className='grid gap-2'>
-                <Label htmlFor='email' className='mb-1'>
+            {/* start */}
+            <div className='flex flex-col gap-7 items-start w-full'>
+              <div className='grid gap-2 w-full'>
+                <Label
+                  htmlFor='email'
+                  className='mb-1 text-white font-inter-tight font-normal text-[12px]'
+                >
                   Enter Email
                 </Label>
                 <div className='flex gap-2'>
                   <Input
                     id='email'
                     type='email'
-                    placeholder='Email'
+                    autoComplete='email'
+                    placeholder='hikari@company.com'
                     {...register('email')}
                     className='w-full'
                   />
@@ -131,14 +127,18 @@ export function SignInView() {
                   </p>
                 )}
               </div>
-              <div className='grid gap-2'>
-                <Label htmlFor='password' className='mb-1'>
+              <div className='grid gap-2 w-full'>
+                <Label
+                  htmlFor='password'
+                  className='mb-1 text-white font-inter-tight font-normal text-[12px]'
+                >
                   Password
                 </Label>
                 <div className='flex gap-2'>
                   <Input
                     id='password'
                     type='password'
+                    autoComplete='current-password'
                     placeholder='Password'
                     {...register('password')}
                     className='w-full'
@@ -150,31 +150,57 @@ export function SignInView() {
                   </p>
                 )}
               </div>
-            </div>
-          </CardContent>
 
-          <CardFooter className='flex-col gap-2'>
-            <a
-              className='w-full text-center bg-green-20 border rounded-2xl p-2'
-              href={paths.auth.jwt.forgotPassword}
-            >
-              Forgot Password
-            </a>
-            <Button type='submit' disabled={isSubmitting} className='w-full'>
-              {isSubmitting ? 'Submitting…' : 'Login'}
-            </Button>
-            <p>
-              Don't have a account?{' '}
-              <a href={paths.auth.jwt.signUp} className='text-green-500'>
-                SignUp
-              </a>
+              <div className='flex justify-between w-full'>
+                <div className='flex gap-1.5 items-center'>
+                  <Checkbox />
+                  <p className='font-normal font-inter-tight text-[14px] text-[#4F4F52]'>
+                    Remember me
+                  </p>
+                </div>
+                <a
+                  className='font-normal font-inter-tight text-[14px] text-[#4F4F52] '
+                  href={paths.auth.jwt.forgotPassword}
+                >
+                  Forgot Password
+                </a>
+              </div>
+
+              <Button
+                type='submit'
+                disabled={isSubmitting}
+                className='w-full py-3 px-6 bg-[#E14453]'
+              >
+                {' '}
+                {isSubmitting ? 'Submitting…' : 'Log in now'}
+              </Button>
+            </div>
+
+            <p className='font-normal font-inter-tight text-[14px] text-[#4F4F52] leading-[150%]'>
+              or login with
             </p>
 
-            {errorMsg ? (
-              <p className='text-sm text-destructive'>{errorMsg}</p>
-            ) : null}
-          </CardFooter>
-        </Card>
+            <div className='flex gap-3'>
+              <div className='bg-[#FFCFD4] py-2 px-5 rounded-[12px] border-[1.5px] border-[#E7E7E7]'>
+                <p className='text-[16px] text-[#545454] flex gap-1'>
+                  <img src='/image/google.svg' alt='' /> Google
+                </p>
+              </div>
+
+              <div className='bg-[#FFCFD4] py-2 px-5 rounded-[12px] border-[1.5px] border-[#E7E7E7]'>
+                <p className='text-[16px] text-[#545454] flex gap-1'>
+                  <img src='/image/apple.svg' alt='' /> Apple
+                </p>
+              </div>
+            </div>
+
+            <p className='font-normal font-inter-tight text-[14px] text-[#FFFFFF] '>
+              don’t have an account? {'  '}
+              <a href={paths.auth.jwt.signUp}>register {'  '}</a>
+              now.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
