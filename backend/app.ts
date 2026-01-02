@@ -25,6 +25,7 @@ app.use(
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/blogs', (await import('./routes/blog.routes.js')).default);
+app.use('/profiles', (await import('./routes/profile.routes.js')).default);
 
 // Global error handler
 app.use(

@@ -1,12 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '~/components/ui/dropdown-menu';
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from '~/components/ui/menubar';
 
 import { signOut } from 'app/auth/context/action';
 import { useRouter } from 'app/routes/hooks';
@@ -56,27 +58,36 @@ const Navbar = () => {
 
         <div>
           {loading ? null : authenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage
-                    src='https://github.com/shadcn.png'
-                    alt='User'
-                    className='w-12'
-                  />
-                  <AvatarFallback>ACC</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
+            <div className='flex gap-3 items-center'>
+              <Menubar>
+                <MenubarMenu>
+                  <MenubarTrigger>
+                    <img src='/image/menu.svg' alt='' />
+                  </MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarItem>
+                      New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+                    </MenubarItem>
+                    <MenubarItem>New Window</MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarItem>Share</MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarItem onClick={handleSignOut}>Logout</MenubarItem>
+                  </MenubarContent>
+                </MenubarMenu>
+              </Menubar>
 
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
+              <Avatar>
+                <AvatarImage
+                  src='https://github.com/shadcn.png'
+                  alt='User'
+                  className='w-12'
+                />
+                <AvatarFallback>ACC</AvatarFallback>
+              </Avatar>
 
-                <DropdownMenuItem onClick={handleSignOut}>
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              <p>{user?.username}</p>
+            </div>
           ) : (
             <div className='flex gap-2 font-mulish'>
               <button

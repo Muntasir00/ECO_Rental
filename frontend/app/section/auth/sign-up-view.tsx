@@ -106,7 +106,7 @@ export function SignUpView() {
                   htmlFor='username'
                   className='mb-1  text-white font-inter-tight font-normal text-[12px]'
                 >
-                  Name
+                  User Name
                 </Label>
                 <Input
                   id='username'

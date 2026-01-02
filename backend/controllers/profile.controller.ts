@@ -1,0 +1,66 @@
+import { Request, Response } from 'express';
+import cloudinary from '../config/cloudinary.js';
+import { Profile } from '../models/profile.model.js';
+import { Types } from 'mongoose';
+import { User } from '../models/user.model.js';
+
+export const getMe = async (req: Request, res: Response) => {
+  const user = await User.findById(req.userId).select('-password');
+
+  const profile = await Profile.findOne({
+    user: new Types.ObjectId(req.userId),
+  });
+
+  return res.json({
+    success: true,
+    user,
+    profile,
+  });
+};
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const { fullName, phoneNumber, address, identityType, emergencyContact } =
+      req.body;
+
+    const files = req.files as {
+      [key: string]: Express.Multer.File[];
+    };
+
+    const profileImage = files?.profileImage?.[0];
+    const identityFile = files?.identityFile?.[0];
+
+    let profileImageUrl, identityFileUrl;
+
+    if (profileImage) {
+      const upload = await cloudinary.uploader.upload(profileImage.path);
+      profileImageUrl = upload.secure_url;
+    }
+
+    if (identityFile) {
+      const upload = await cloudinary.uploader.upload(identityFile.path);
+      identityFileUrl = upload.secure_url;
+    }
+
+    const profile = await Profile.findOneAndUpdate(
+      { user: new Types.ObjectId(req.userId) },
+      {
+        fullName,
+        phoneNumber,
+        address,
+        identityType,
+        emergencyContact,
+        ...(profileImageUrl && { profileImage: profileImageUrl }),
+        ...(identityFileUrl && { identityFile: identityFileUrl }),
+      },
+      { new: true, upsert: true }
+    );
+
+    res.json({
+      success: true,
+      profile,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Profile update failed' });
+  }
+};

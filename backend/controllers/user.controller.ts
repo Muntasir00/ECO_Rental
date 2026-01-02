@@ -11,6 +11,7 @@ import {
   generateRefreshToken,
 } from '../services/Auth/token.service.js';
 import RefreshToken from '../models/refreshToken.model.js';
+import { Profile } from '../models/profile.model.js';
 
 // Register User
 export const registerUser = async (req: Request, res: Response) => {
@@ -33,6 +34,17 @@ export const registerUser = async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       role: 'user',
+    });
+
+    Profile.create({
+      user: user._id,
+      fullName: user.username,
+      phoneNumber: '',
+      address: '',
+      identityType: 'NID',
+      identityFile: '',
+      profileImage: '',
+      emergencyContact: '',
     });
 
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY!, {
