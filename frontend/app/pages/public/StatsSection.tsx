@@ -1,11 +1,11 @@
 import React from 'react';
-import { Star } from 'lucide-react';
+import {Star} from 'lucide-react';
 
 const StatsSection = () => {
     const stats = [
-        { id: 1, number: "100+", label: "Comfortable", subLabel: "room" },
-        { id: 2, number: "5M+", label: "Happy", subLabel: "Customers" },
-        { id: 3, number: "23+", label: "Certificate of", subLabel: "Merit" },
+        {id: 1, number: "100+", label: "Comfortable", subLabel: "room"},
+        {id: 2, number: "5M+", label: "Happy", subLabel: "Customers"},
+        {id: 3, number: "23+", label: "Certificate of", subLabel: "Merit"},
     ];
 
     return (
@@ -37,35 +37,26 @@ const StatsSection = () => {
                     </div>
 
                     <div className="flex-1 flex justify-center items-center w-full">
-                        <div className="flex items-center">
 
-                            {stats.map((stat, index) => (
-                                <div
-                                    key={stat.id}
-                                    className={`
-                    relative flex flex-col items-center justify-center text-center
-                    border border-white/60 rounded-full
-                    /* Circle Size Responsive */
-                    w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48
-                    /* Background color needed to hide the border of the circle behind it */
-                    bg-[#E5555C]
-                    /* Negative Margin creates the overlap effect */
-                    ${index !== 0 ? '-ml-6 md:-ml-8 lg:-ml-10' : ''}
-                    /* Z-Index ensures the correct stacking order (left on top) */
-                    z-${(3 - index) * 10}
-                  `}
-                                >
-                  <span className="text-3xl md:text-4xl lg:text-5xl font-light mb-1 md:mb-2">
-                    {stat.number}
-                  </span>
-                                    <div className="text-xs md:text-sm font-light opacity-90 leading-tight">
-                                        <p>{stat.label}</p>
-                                        <p>{stat.subLabel}</p>
-                                    </div>
-                                </div>
-                            ))}
-
+                        <div className="relative flex items-center gap-[-40px]">
+                            <div
+                                className="w-28 h-28 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full border border-white flex flex-col items-center justify-center text-white relative z-10">
+                                <h2 className="text-2xl md:text-4xl lg:text-5xl font-light mb-1 md:mb-2">100+</h2>
+                                <p className="text-sm mt-2 text-center">Comfortable <br className="block sm:hidden"/> room</p>
+                            </div>
+                            <div
+                                className="w-28 h-28  md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full border border-white flex flex-col items-center justify-center text-white -ml-4 sm:-ml-8 md:-ml-6 z-20"
+                            >
+                                <h2 className="text-2xl md:text-4xl lg:text-5xl font-light mb-1 md:mb-2">5M+</h2>
+                                <p className="text-sm mt-2 text-center">Happy <br className="block sm:hidden"/> Customers</p>
+                            </div>
+                            <div
+                                className="w-28 h-28  md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full border border-white flex flex-col items-center justify-center text-white -ml-4 sm:-ml-8 md:-ml-6 z-10">
+                                <h2 className="text-2xl md:text-4xl lg:text-5xl font-light mb-1 md:mb-2">23+</h2>
+                                <p className="text-sm mt-2 text-center">Certificate of <br className="block sm:hidden"/> Merit</p>
+                            </div>
                         </div>
+
                     </div>
 
                 </div>
