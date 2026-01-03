@@ -1,0 +1,70 @@
+import React from 'react';
+
+const RelatedBlogs = () => {
+    // Data mimicking the screenshot
+    const relatedPosts = [
+        {
+            id: 1,
+            image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            title: "New facilities : Large golf course at the Zerra hotel",
+            date: "25 May 2023"
+        },
+        {
+            id: 2,
+            image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            title: "Coming soon! a posh supermarket near the hotel",
+            date: "12 May 2023"
+        },
+        {
+            id: 3,
+            image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            title: "Webinar event Mental training for young people to develop",
+            date: "15 Apr 2023"
+        }
+    ];
+
+    return (
+        <section className=" py-16 px-4 sm:px-6 lg:px-8 font-sans">
+            <div className="max-w-7xl mx-auto">
+
+                {/* Section Heading */}
+                <h2 className="text-3xl md:text-4xl font-serif text-[#1A1A1A] mb-10">
+                    Other Related Blogs
+                </h2>
+
+                {/* Grid Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    {relatedPosts.map((post) => (
+                        <article key={post.id} className="group cursor-pointer flex flex-col h-full">
+
+                            {/* Image Container */}
+                            <div className="overflow-hidden w-full h-64 mb-5 bg-gray-200">
+                                <img
+                                    src={post.image}
+                                    alt={post.title}
+                                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+                                />
+                            </div>
+
+                            {/* Text Content */}
+                            <div className="flex flex-col flex-grow">
+                                <h3 className="text-xl font-serif text-[#1A1A1A] leading-snug mb-3 group-hover:text-gray-600 transition-colors">
+                                    {post.title}
+                                </h3>
+
+                                <time className="text-gray-500 text-sm font-normal mt-auto">
+                                    {post.date}
+                                </time>
+                            </div>
+
+                        </article>
+                    ))}
+
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default RelatedBlogs;

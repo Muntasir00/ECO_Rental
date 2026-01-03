@@ -2,6 +2,7 @@ import React from 'react';
 import about from '../../pages/public/about';
 import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
+import MissionVisionSection from "~/section/public/MissionVisionSection";
 
 const AboutPageView = () => {
   return (
@@ -130,6 +131,8 @@ const AboutPageView = () => {
           </div>
         </div>
       </div>
+
+      <MissionVisionSection/>
 
       <div className='flex flex-col gap-10 bg-[#F1F1F1] py-15 px-28 items-center'>
         <p className='font-eb-garamond font-medium text-[46px] text-[#191818]'>
