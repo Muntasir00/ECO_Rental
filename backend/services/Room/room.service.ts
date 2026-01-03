@@ -1,0 +1,61 @@
+import { Booking } from '../../models/booking.model.js';
+import { Room } from '../../models/room.model.js';
+
+export const createRoomService = (data: any) => {
+  return Room.create(data);
+};
+
+export const getAvailableRoomsService = async (page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
+
+  const [rooms, total] = await Promise.all([
+    Room.find({ available: true })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 }),
+    Room.countDocuments({ available: true }),
+  ]);
+
+  return {
+    rooms,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
+
+export const getRoomByIdService = (id: string) => {
+  return Room.findById(id);
+};
+
+export const searchRoomsService = async (query: any) => {
+  const { location, bedroom, checkIn, checkOut, page = 1, limit = 10 } = query;
+
+  const filter: any = {};
+  if (location) filter.location = new RegExp(location, 'i');
+  if (bedroom) filter.bedroom = Number(bedroom);
+
+  const skip = (Number(page) - 1) * Number(limit);
+
+  const rooms = await Room.find(filter).skip(skip).limit(Number(limit));
+
+  // Filter rooms by availability between dates
+  if (checkIn && checkOut) {
+    const unavailableRoomIds = await Booking.distinct('room', {
+      status: 'ongoing',
+      $or: [
+        {
+          checkIn: { $lt: new Date(checkOut) },
+          checkOut: { $gt: new Date(checkIn) },
+        },
+      ],
+    });
+
+    return rooms.filter(room => !unavailableRoomIds.includes(room._id));
+  }
+
+  return rooms;
+};

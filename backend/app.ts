@@ -2,10 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import userRoutes from './routes/user.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import { bookingCronJob } from './cron/booking.cron.js';
 
 const app = express();
 
 app.use(express.json());
+bookingCronJob();
 
 const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
 
