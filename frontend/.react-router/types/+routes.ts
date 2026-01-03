@@ -34,6 +34,20 @@ type Pages = {
   "/auth/verify-otp": {
     params: {};
   };
+  "/blog": {
+    params: {};
+  };
+  "/blog/:slug": {
+    params: {
+      "slug": string;
+    };
+  };
+  "/contact-us": {
+    params: {};
+  };
+  "/about-us": {
+    params: {};
+  };
   "/home": {
     params: {};
   };
@@ -42,7 +56,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home";
+    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/blog" | "/blog/:slug" | "/contact-us" | "/about-us" | "/home";
   };
   "pages/index.tsx": {
     id: "pages/index";
@@ -50,11 +64,11 @@ type RouteFiles = {
   };
   "layouts/main.tsx": {
     id: "layouts/main";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/" | "/blog" | "/blog/:slug" | "/contact-us" | "/about-us" | "/home";
   };
   "layouts/guest.tsx": {
     id: "layouts/guest";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/" | "/blog" | "/blog/:slug" | "/contact-us" | "/about-us";
   };
   "pages/auth/sign-in.tsx": {
     id: "pages/auth/sign-in";
@@ -80,6 +94,26 @@ type RouteFiles = {
     id: "pages/auth/verify-otp";
     page: "/auth/verify-otp";
   };
+  "pages/public/index.tsx": {
+    id: "pages/public/index";
+    page: "/";
+  };
+  "pages/public/blog/index.tsx": {
+    id: "pages/public/blog/index";
+    page: "/blog";
+  };
+  "pages/public/blog/[slug].tsx": {
+    id: "pages/public/blog/[slug]";
+    page: "/blog/:slug";
+  };
+  "pages/public/contact.tsx": {
+    id: "pages/public/contact";
+    page: "/contact-us";
+  };
+  "pages/public/about.tsx": {
+    id: "pages/public/about";
+    page: "/about-us";
+  };
   "layouts/protected.tsx": {
     id: "layouts/protected";
     page: "/home";
@@ -101,6 +135,11 @@ type RouteModules = {
   "pages/auth/change-password": typeof import("./app/pages/auth/change-password.tsx");
   "pages/auth/forgot-password": typeof import("./app/pages/auth/forgot-password.tsx");
   "pages/auth/verify-otp": typeof import("./app/pages/auth/verify-otp.tsx");
+  "pages/public/index": typeof import("./app/pages/public/index.tsx");
+  "pages/public/blog/index": typeof import("./app/pages/public/blog/index.tsx");
+  "pages/public/blog/[slug]": typeof import("./app/pages/public/blog/[slug].tsx");
+  "pages/public/contact": typeof import("./app/pages/public/contact.tsx");
+  "pages/public/about": typeof import("./app/pages/public/about.tsx");
   "layouts/protected": typeof import("./app/layouts/protected.tsx");
   "pages/Home/Homeview": typeof import("./app/pages/Home/Homeview.tsx");
 };

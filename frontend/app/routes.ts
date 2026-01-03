@@ -11,6 +11,12 @@ export default [
       route('/auth/change-password', 'pages/auth/change-password.tsx'),
       route('/auth/forgot-password', 'pages/auth/forgot-password.tsx'),
       route('/auth/verify-otp', 'pages/auth/verify-otp.tsx'),
+      // Public pages
+      route('', 'pages/public/index.tsx'),
+      route('blog', 'pages/public/blog/index.tsx'),
+      route('blog/:slug', 'pages/public/blog/[slug].tsx'),
+      route('contact-us', 'pages/public/contact.tsx'),
+      route('about-us', 'pages/public/about.tsx'),
     ]),
 
     // Protected routes: dashboard and other app pages

@@ -13,7 +13,7 @@ export default function IndexRedirect() {
     if (authenticated) {
       router.replace(paths.home.root);
     } else {
-      router.replace(paths.auth.jwt.signIn);
+      router.replace(paths.public.root);
     }
   }, [authenticated, loading, router]);
 

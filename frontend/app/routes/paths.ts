@@ -4,6 +4,7 @@ import { paramCase } from '../utils/change-case';
 const ROOTS = {
   AUTH: '/auth',
   Home: '/home',
+  Public: '/',
 };
 
 // ----------------------------------------------------------------------
@@ -26,5 +27,12 @@ export const paths = {
   // DASHBOARD
   home: {
     root: ROOTS.Home,
+  },
+  public: {
+    root: '/',
+    blog: '/blog',
+    blogDetail: '/blog/:slug',
+    contact: '/contact-us',
+    about: '/about-us',
   },
 };

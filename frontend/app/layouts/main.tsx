@@ -5,8 +5,8 @@ const MainLayout = () => {
   return (
     <div className='max-w-[1920px] p-5  items-center mx-auto min-h-screen'>
       <Navbar />
-      <div className='mt-15'>
-      <Outlet />
+      <div className='mt-17'>
+        <Outlet />
       </div>
       <Footer />
     </div>
