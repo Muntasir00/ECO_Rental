@@ -34,6 +34,9 @@ type Pages = {
   "/auth/verify-otp": {
     params: {};
   };
+  "/home": {
+    params: {};
+  };
   "/blogs": {
     params: {};
   };
@@ -59,15 +62,12 @@ type Pages = {
   "/booking": {
     params: {};
   };
-  "/home": {
-    params: {};
-  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking" | "/home";
+    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking";
   };
   "pages/index.tsx": {
     id: "pages/index";
@@ -75,11 +75,11 @@ type RouteFiles = {
   };
   "layouts/main.tsx": {
     id: "layouts/main";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking" | "/home";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking";
   };
   "layouts/guest.tsx": {
     id: "layouts/guest";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking";
   };
   "pages/auth/sign-in.tsx": {
     id: "pages/auth/sign-in";
@@ -107,7 +107,7 @@ type RouteFiles = {
   };
   "pages/public/index.tsx": {
     id: "pages/public/index";
-    page: "/";
+    page: "/home";
   };
   "pages/public/blog/index.tsx": {
     id: "pages/public/blog/index";
