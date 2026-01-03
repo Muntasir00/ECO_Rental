@@ -14,6 +14,8 @@ export default [
             // Public pages
             // route('', 'pages/public/index.tsx'),
             route('/home', 'pages/public/index.tsx'),
+            route('/account', 'pages/public/account/index.tsx'),
+            route('/profile', 'pages/public/profile/index.tsx'),
             route('blogs', 'pages/public/blog/index.tsx'),
             route('blog/:id', 'pages/public/blog/blog-detail.tsx'),
             // route('blog/:slug', 'pages/public/blog/[slug].tsx'),
@@ -22,6 +24,7 @@ export default [
             route('rooms', 'pages/public/rooms/index.tsx'),
             route('room/:id', 'pages/public/rooms/room-detail.tsx'),
             route('booking', 'pages/public/rooms/BookingPage.tsx'),
+            route('user-booking', 'pages/public/rooms/user-booking-page.tsx'),
         ]),
 
         // Protected routes: dashboard and other app pages

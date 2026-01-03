@@ -37,6 +37,12 @@ type Pages = {
   "/home": {
     params: {};
   };
+  "/account": {
+    params: {};
+  };
+  "/profile": {
+    params: {};
+  };
   "/blogs": {
     params: {};
   };
@@ -62,12 +68,15 @@ type Pages = {
   "/booking": {
     params: {};
   };
+  "/user-booking": {
+    params: {};
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking";
+    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking" | "/user-booking";
   };
   "pages/index.tsx": {
     id: "pages/index";
@@ -75,11 +84,11 @@ type RouteFiles = {
   };
   "layouts/main.tsx": {
     id: "layouts/main";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking" | "/user-booking";
   };
   "layouts/guest.tsx": {
     id: "layouts/guest";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/home" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking" | "/user-booking";
   };
   "pages/auth/sign-in.tsx": {
     id: "pages/auth/sign-in";
@@ -109,6 +118,14 @@ type RouteFiles = {
     id: "pages/public/index";
     page: "/home";
   };
+  "pages/public/account/index.tsx": {
+    id: "pages/public/account/index";
+    page: "/account";
+  };
+  "pages/public/profile/index.tsx": {
+    id: "pages/public/profile/index";
+    page: "/profile";
+  };
   "pages/public/blog/index.tsx": {
     id: "pages/public/blog/index";
     page: "/blogs";
@@ -137,6 +154,10 @@ type RouteFiles = {
     id: "pages/public/rooms/BookingPage";
     page: "/booking";
   };
+  "pages/public/rooms/user-booking-page.tsx": {
+    id: "pages/public/rooms/user-booking-page";
+    page: "/user-booking";
+  };
   "layouts/protected.tsx": {
     id: "layouts/protected";
     page: "/home";
@@ -159,6 +180,8 @@ type RouteModules = {
   "pages/auth/forgot-password": typeof import("./app/pages/auth/forgot-password.tsx");
   "pages/auth/verify-otp": typeof import("./app/pages/auth/verify-otp.tsx");
   "pages/public/index": typeof import("./app/pages/public/index.tsx");
+  "pages/public/account/index": typeof import("./app/pages/public/account/index.tsx");
+  "pages/public/profile/index": typeof import("./app/pages/public/profile/index.tsx");
   "pages/public/blog/index": typeof import("./app/pages/public/blog/index.tsx");
   "pages/public/blog/blog-detail": typeof import("./app/pages/public/blog/blog-detail.tsx");
   "pages/public/contact": typeof import("./app/pages/public/contact.tsx");
@@ -166,6 +189,7 @@ type RouteModules = {
   "pages/public/rooms/index": typeof import("./app/pages/public/rooms/index.tsx");
   "pages/public/rooms/room-detail": typeof import("./app/pages/public/rooms/room-detail.tsx");
   "pages/public/rooms/BookingPage": typeof import("./app/pages/public/rooms/BookingPage.tsx");
+  "pages/public/rooms/user-booking-page": typeof import("./app/pages/public/rooms/user-booking-page.tsx");
   "layouts/protected": typeof import("./app/layouts/protected.tsx");
   "pages/Home/Homeview": typeof import("./app/pages/Home/Homeview.tsx");
 };
