@@ -18,6 +18,9 @@ export default [
             // route('blog/:slug', 'pages/public/blog/[slug].tsx'),
             route('contact-us', 'pages/public/contact.tsx'),
             route('about-us', 'pages/public/about.tsx'),
+            route('rooms', 'pages/public/rooms/index.tsx'),
+            route('room/:id', 'pages/public/rooms/room-detail.tsx'),
+            route('booking', 'pages/public/rooms/BookingPage.tsx'),
         ]),
 
         // Protected routes: dashboard and other app pages

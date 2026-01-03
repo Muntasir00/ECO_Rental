@@ -48,6 +48,17 @@ type Pages = {
   "/about-us": {
     params: {};
   };
+  "/rooms": {
+    params: {};
+  };
+  "/room/:id": {
+    params: {
+      "id": string;
+    };
+  };
+  "/booking": {
+    params: {};
+  };
   "/home": {
     params: {};
   };
@@ -56,7 +67,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/home";
+    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking" | "/home";
   };
   "pages/index.tsx": {
     id: "pages/index";
@@ -64,11 +75,11 @@ type RouteFiles = {
   };
   "layouts/main.tsx": {
     id: "layouts/main";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/home";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking" | "/home";
   };
   "layouts/guest.tsx": {
     id: "layouts/guest";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/booking";
   };
   "pages/auth/sign-in.tsx": {
     id: "pages/auth/sign-in";
@@ -114,6 +125,18 @@ type RouteFiles = {
     id: "pages/public/about";
     page: "/about-us";
   };
+  "pages/public/rooms/index.tsx": {
+    id: "pages/public/rooms/index";
+    page: "/rooms";
+  };
+  "pages/public/rooms/room-detail.tsx": {
+    id: "pages/public/rooms/room-detail";
+    page: "/room/:id";
+  };
+  "pages/public/rooms/BookingPage.tsx": {
+    id: "pages/public/rooms/BookingPage";
+    page: "/booking";
+  };
   "layouts/protected.tsx": {
     id: "layouts/protected";
     page: "/home";
@@ -140,6 +163,9 @@ type RouteModules = {
   "pages/public/blog/blog-detail": typeof import("./app/pages/public/blog/blog-detail.tsx");
   "pages/public/contact": typeof import("./app/pages/public/contact.tsx");
   "pages/public/about": typeof import("./app/pages/public/about.tsx");
+  "pages/public/rooms/index": typeof import("./app/pages/public/rooms/index.tsx");
+  "pages/public/rooms/room-detail": typeof import("./app/pages/public/rooms/room-detail.tsx");
+  "pages/public/rooms/BookingPage": typeof import("./app/pages/public/rooms/BookingPage.tsx");
   "layouts/protected": typeof import("./app/layouts/protected.tsx");
   "pages/Home/Homeview": typeof import("./app/pages/Home/Homeview.tsx");
 };
