@@ -12,9 +12,11 @@ import {
 } from '../services/Auth/token.service.js';
 import RefreshToken from '../models/refreshToken.model.js';
 import { Profile } from '../models/profile.model.js';
+import { connectDB } from '../config/db.js';
 
 // Register User
 export const registerUser = async (req: Request, res: Response) => {
+  await connectDB();
   try {
     const { username, email, password } = req.body;
 
