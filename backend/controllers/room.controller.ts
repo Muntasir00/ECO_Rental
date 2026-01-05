@@ -7,8 +7,15 @@ import {
 } from '../services/Room/room.service.js';
 
 export const createRoom = async (req: Request, res: Response) => {
-  const room = await createRoomService(req.body);
-  res.status(201).json(room);
+  const room = await createRoomService(
+    req.body,
+    req.files as Express.Multer.File[]
+  );
+  res.status(201).json({
+    success: true,
+    message: 'Room created successfully',
+    room,
+  });
 };
 
 export const getRooms = async (req: Request, res: Response) => {

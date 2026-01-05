@@ -9,13 +9,18 @@ export interface IRoom extends Document {
   balcony: boolean;
   availableRooms: number;
   pricePerNight: number;
+  guest: number;
   available: boolean;
+  images: {
+    url: string;
+    publicId: string;
+  }[];
 }
 
 const roomSchema = new Schema<IRoom>(
   {
     name: { type: String, required: true },
-    location: { type: String, required: true, index: true },
+    location: { type: String, required: true },
 
     size: { type: Number, required: true },
     bedroom: { type: Number, required: true },
@@ -25,12 +30,21 @@ const roomSchema = new Schema<IRoom>(
     availableRooms: { type: Number, required: true },
     pricePerNight: { type: Number, required: true },
     available: { type: Boolean, default: true },
+    guest: { type: Number, required: true },
+    images: [
+      {
+        url: { type: String, required: true },
+        publicId: { type: String, required: true },
+      },
+    ],
   },
   { timestamps: true }
 );
+
+// indexes
 roomSchema.index({ location: 1 });
 roomSchema.index({ bedroom: 1 });
-roomSchema.index({ location: 1, bedroom: 1 }); // compound index
+roomSchema.index({ location: 1, bedroom: 1 });
 roomSchema.index({ pricePerNight: 1 });
 
 export const Room = mongoose.model<IRoom>('Room', roomSchema);

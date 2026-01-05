@@ -1,8 +1,45 @@
+import cloudinary from '../../config/cloudinary.js';
 import { Booking } from '../../models/booking.model.js';
 import { Room } from '../../models/room.model.js';
 
-export const createRoomService = (data: any) => {
-  return Room.create(data);
+export const createRoomService = async (
+  data: any,
+  files: Express.Multer.File[] = []
+) => {
+  if (!files.length) {
+    throw new Error('Room images are required');
+  }
+  if (
+    !data.name ||
+    !data.location ||
+    !data.size ||
+    !data.bedroom ||
+    !data.bathroom ||
+    !data.availableRooms ||
+    !data.pricePerNight ||
+    !data.guest
+  ) {
+    throw new Error('All room details are required');
+  }
+
+  const uploads = await Promise.all(
+    files.map(file =>
+      cloudinary.uploader.upload(
+        `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
+        { folder: 'rooms' }
+      )
+    )
+  );
+
+  const images = uploads.map(upload => ({
+    url: upload.secure_url,
+    publicId: upload.public_id,
+  }));
+
+  return Room.create({
+    ...data,
+    images,
+  });
 };
 
 export const getAvailableRoomsService = async (page = 1, limit = 10) => {
@@ -36,7 +73,9 @@ export const searchRoomsService = async (query: any) => {
 
   const filter: any = {};
   if (location) filter.location = new RegExp(location, 'i');
-  if (bedroom) filter.bedroom = Number(bedroom);
+  if (bedroom) {
+    filter.bedroom = { $gte: Number(bedroom) };
+  }
 
   const skip = (Number(page) - 1) * Number(limit);
 
