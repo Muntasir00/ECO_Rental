@@ -17,7 +17,6 @@ const index = () => {
     const [open1, setOpen1] = React.useState(false)
     const [date1, setDate1] = React.useState<Date | undefined>(undefined)
 
-    // 1. Slider Data (Background Images)
     const slides = [
         {
             id: 1,
