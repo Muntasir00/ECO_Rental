@@ -1,11 +1,28 @@
 import mongoose from 'mongoose';
 
+const MONGO_URI = process.env.MONGO_URI as string;
+
+if (!MONGO_URI) {
+  throw new Error('MONGO_URI is not defined');
+}
+
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
+
 export const connectDB = async () => {
-  try {
-    await mongoose.connect(`${process.env.MONGO_URI}/eco-rental-app-ts`);
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('MongoDB error', error);
-    process.exit(1);
+  if (cached.conn) {
+    return cached.conn;
   }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGO_URI, {
+      bufferCommands: false,
+    });
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 };

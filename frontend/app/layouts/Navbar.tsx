@@ -43,7 +43,7 @@ const Navbar = () => {
 
         <ul className='flex justify-between items-center text-[16px] font-normal text-[#000000] gap-10 font-manrope'>
           <li>
-            <a href='/'>Home</a>
+            <a href='/home'>Home</a>
           </li>
           <li>
             <a href='/blogs'>Blogs</a>
