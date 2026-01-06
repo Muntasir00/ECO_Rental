@@ -66,6 +66,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
 // Registration Verification
 export const verification = async (req: Request, res: Response) => {
+  await connectDB();
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -125,6 +126,7 @@ export const verification = async (req: Request, res: Response) => {
 
 //  LogIn User
 export const loginUser = async (req: Request, res: Response) => {
+  await connectDB();
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -199,6 +201,7 @@ export const loginUser = async (req: Request, res: Response) => {
 // Logout User
 
 export const logoutUser = async (req: Request, res: Response) => {
+  await connectDB();
   try {
     if (!req.userId) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -223,6 +226,7 @@ export const logoutUser = async (req: Request, res: Response) => {
 
 // Forgot Password
 export const forgotPassword = async (req: Request, res: Response) => {
+  await connectDB();
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
@@ -254,6 +258,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 // Verify OTP for password reset
 
 export const verifyOTP = async (req: Request, res: Response) => {
+  await connectDB();
   const { otp } = req.body;
   const email = req.params.email;
   if (!email) {
@@ -316,6 +321,7 @@ export const verifyOTP = async (req: Request, res: Response) => {
 // Change Password
 
 export const changePassword = async (req: Request, res: Response) => {
+  await connectDB();
   const { newPassword, confirmPassword } = req.body;
   const email = req.params.email;
   if (!email) {
@@ -366,6 +372,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
 // Access token generation
 export const refreshAccessToken = async (req: Request, res: Response) => {
+  await connectDB();
   const { refreshToken } = req.body;
 
   if (!refreshToken) {
