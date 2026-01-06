@@ -6,9 +6,9 @@ export const blogs = async (page: number) =>{
     return data.blogs;
 }
 
-export const blog = async (id: number) =>{
+export const blog = async (id: string) =>{
     const res = await axios.get(`${endpoints.blogs.blog}/${id}`);
     const { data} = res;
     console.log(data);
-    return data;
+    return data.blog;
 }

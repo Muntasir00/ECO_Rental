@@ -62,6 +62,10 @@ export const endpoints = {
   },
   blogs:{
     allBlogs: '/blogs',
-    blog: '/blog',
+    blog: '/blogs',
+  },
+  rooms:{
+    allRooms: '/rooms',
+    singleRoom: '/rooms',
   }
 };
