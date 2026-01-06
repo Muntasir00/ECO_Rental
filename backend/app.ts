@@ -9,7 +9,11 @@ const app = express();
 app.use(express.json());
 bookingCronJob();
 
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://eco-rental-bqf5.vercel.app/',
+];
 
 app.use(
   cors({
