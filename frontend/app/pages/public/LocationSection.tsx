@@ -1,8 +1,8 @@
 import React from 'react';
 
-const LocationSection = () => {
+const LocationSection = ({bgColor= "#F5F5F5"}) => {
     return (
-        <section className="max-w-7xl mx-auto bg-[#F5F5F5] py-16 px-4 sm:px-6 lg:px-8 mb-8">
+        <section className={`max-w-7xl mx-auto bg-[${bgColor}] py-16 px-4 sm:px-6 lg:px-8 mb-8`}>
 
             <div className="text-center mb-10">
                 <h2 className="text-3xl md:text-5xl font-serif text-[#191818]">

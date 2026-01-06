@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
       <div className="bg-gray-100 py-10 px-6 font-sans text-sm text-gray-700">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 xl:gap-8">
           {/* Address */}
           <div>
             <p className="font-semibold mb-4">
@@ -51,7 +51,7 @@ const Footer = () => {
                   placeholder="Email Address"
                   className="border-b border-gray-400 bg-transparent px-0 py-2 flex-1 focus:outline-none"
               />
-              <button className="ml-4 text-gray-500">
+              <button className="ml-4 md:ml-1 xl:ml-4 text-gray-500">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
