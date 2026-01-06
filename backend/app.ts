@@ -7,12 +7,11 @@ import { bookingCronJob } from './cron/booking.cron.js';
 const app = express();
 
 app.use(express.json());
-bookingCronJob();
 
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
-  'https://eco-rental-bqf5.vercel.app/',
+  'https://eco-rental-bqf5.vercel.app',
 ];
 
 app.use(
@@ -27,6 +26,8 @@ app.use(
     credentials: true,
   })
 );
+
+bookingCronJob();
 
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
