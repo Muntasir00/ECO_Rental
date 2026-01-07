@@ -30,10 +30,10 @@ export function GuestGuard({ children }: Props) {
       return;
     }
 
-    if (authenticated) {
-      router.replace(returnTo ?? '/');
-      return;
-    }
+    // if (authenticated) {
+    //   router.replace(returnTo ?? '/');
+    //   return;
+    // }
 
     setIsChecking(false);
   };
