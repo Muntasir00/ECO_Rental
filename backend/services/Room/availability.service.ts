@@ -1,29 +1,53 @@
 import { Booking } from '../../models/booking.model.js';
+import { Room } from '../../models/room.model.js';
 
 export const getRoomAvailabilityService = async (
   roomId: string,
   startDate?: string,
   endDate?: string
 ) => {
-  const filter: any = {
-    room: roomId,
-    status: 'ongoing',
-  };
+  const room = await Room.findById(roomId);
 
-  if (startDate && endDate) {
-    filter.$or = [
-      {
-        checkIn: { $lte: new Date(endDate) },
-        checkOut: { $gte: new Date(startDate) },
-      },
-    ];
+  if (!room) {
+    throw new Error('Room not found');
   }
 
-  const bookings = await Booking.find(filter).select('checkIn checkOut status');
+  if (!startDate || !endDate) {
+    return {
+      roomId,
+      totalRooms: room.availableRooms,
+      availableRooms: room.availableRooms,
+      isAvailable: room.availableRooms > 0,
+      bookings: [],
+    };
+  }
 
-  return bookings.map(b => ({
-    start: b.checkIn,
-    end: b.checkOut,
-    status: 'booked',
-  }));
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  // overlapping bookings
+  const bookings = await Booking.find({
+    room: roomId,
+    status: 'ongoing',
+    checkIn: { $lt: end },
+    checkOut: { $gt: start },
+  }).select('checkIn checkOut roomsBooked');
+
+  const totalBookedRooms = bookings.reduce((sum, b) => sum + b.roomsBooked, 0);
+
+  const availableRooms = Math.max(room.availableRooms - totalBookedRooms, 0);
+
+  return {
+    roomId,
+    totalRooms: room.availableRooms,
+    bookedRooms: totalBookedRooms,
+    availableRooms,
+    isAvailable: availableRooms > 0,
+    bookings: bookings.map(b => ({
+      start: b.checkIn,
+      end: b.checkOut,
+      roomsBooked: b.roomsBooked,
+      status: 'booked',
+    })),
+  };
 };

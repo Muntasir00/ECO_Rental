@@ -8,7 +8,15 @@ export const createBookingService = async (
   roomId: string,
   payload: any
 ) => {
-  const { checkIn, checkOut, roomsBooked, name, email, phoneNumber } = payload;
+  const {
+    checkIn,
+    checkOut,
+    roomsBooked,
+    name,
+    email,
+    phoneNumber,
+    totalGuest = 1,
+  } = payload;
 
   if (!roomsBooked || roomsBooked <= 0) {
     throw new Error('roomsBooked must be greater than 0');
@@ -23,7 +31,6 @@ export const createBookingService = async (
 
   const nights = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
 
-  // atomic availability update
   const room = await Room.findOneAndUpdate(
     { _id: roomId, availableRooms: { $gte: roomsBooked } },
     { $inc: { availableRooms: -roomsBooked } },
@@ -34,12 +41,18 @@ export const createBookingService = async (
     throw new Error('Not enough rooms available');
   }
 
+  const maxAllowedGuests = room.guest * roomsBooked;
+  if (totalGuest > maxAllowedGuests) {
+    throw new Error(`Maximum allowed guests is ${maxAllowedGuests}`);
+  }
+
   const totalPrice = nights * room.pricePerNight * roomsBooked;
 
   const booking = await Booking.create({
     user: userId,
     room: room._id,
     roomsBooked,
+    totalGuest,
     name,
     email,
     phoneNumber,
@@ -48,11 +61,19 @@ export const createBookingService = async (
     totalPrice,
   });
 
-  // update available flag
   room.available = room.availableRooms > 0;
   await room.save();
 
-  return booking;
+  return {
+    booking,
+    pricing: {
+      nights,
+      pricePerNight: room.pricePerNight,
+      roomsBooked,
+      totalGuest,
+      totalPrice,
+    },
+  };
 };
 
 export const getUserBookingsService = (userId: string, type?: string) => {

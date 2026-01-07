@@ -3,8 +3,10 @@ import cloudinary from '../config/cloudinary.js';
 import { Profile } from '../models/profile.model.js';
 import { Types } from 'mongoose';
 import { User } from '../models/user.model.js';
+import { connectDB } from '../config/db.js';
 
 export const getMe = async (req: Request, res: Response) => {
+  await connectDB();
   const user = await User.findById(req.userId).select('-password');
 
   const profile = await Profile.findOne({
@@ -18,6 +20,7 @@ export const getMe = async (req: Request, res: Response) => {
   });
 };
 export const updateProfile = async (req: Request, res: Response) => {
+  await connectDB();
   try {
     const { fullName, phoneNumber, address, identityType, emergencyContact } =
       req.body;

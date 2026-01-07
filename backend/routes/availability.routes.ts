@@ -4,6 +4,6 @@ import { protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-router.get('/rooms/:roomId/availability', protect, getRoomAvailability);
+router.get('/rooms/:roomId/availability', getRoomAvailability);
 
 export default router;

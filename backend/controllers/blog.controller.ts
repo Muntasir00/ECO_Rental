@@ -7,8 +7,10 @@ import {
   updateBlogByIdService,
   deleteBlogByIdService,
 } from '../services/Blog/blog.service.js';
+import { connectDB } from '../config/db.js';
 
 export const createBlog = async (req: Request, res: Response) => {
+  await connectDB();
   const { title, content } = req.body;
 
   if (!title || !content || !req.file) {
@@ -34,6 +36,7 @@ export const createBlog = async (req: Request, res: Response) => {
 };
 
 export const getBlogs = async (req: Request, res: Response) => {
+  await connectDB();
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
   const search = (req.query.search as string) || '';
@@ -46,6 +49,7 @@ export const getBlogs = async (req: Request, res: Response) => {
 };
 
 export const getBlogById = async (req: Request, res: Response) => {
+  await connectDB();
   const { id } = req.params;
   if (!id) {
     return res.status(400).json({ message: 'Blog ID is required.' });
@@ -63,6 +67,7 @@ export const getBlogById = async (req: Request, res: Response) => {
 };
 
 export const updateBlogById = async (req: Request, res: Response) => {
+  await connectDB();
   const { id } = req.params;
   if (!id) {
     return res.status(400).json({ message: 'Blog ID is required.' });
@@ -100,6 +105,7 @@ export const updateBlogById = async (req: Request, res: Response) => {
 };
 
 export const deleteBlogById = async (req: Request, res: Response) => {
+  await connectDB();
   const { id } = req.params;
   if (!id) {
     return res.status(400).json({ message: 'Blog ID is required.' });

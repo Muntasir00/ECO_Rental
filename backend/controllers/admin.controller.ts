@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { User } from '../models/user.model.js';
+import { connectDB } from '../config/db.js';
 
 export const createAdmin = async (req: Request, res: Response) => {
+  await connectDB();
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {

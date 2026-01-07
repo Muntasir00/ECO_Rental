@@ -15,6 +15,7 @@ export interface IBooking extends Document {
   totalPrice: number;
   status: BookingStatus;
   roomsBooked: number;
+  totalGuest?: number;
 }
 
 const bookingSchema = new Schema<IBooking>(
@@ -31,6 +32,7 @@ const bookingSchema = new Schema<IBooking>(
 
     referralCode: String,
     discount: { type: Number, default: 0 },
+    totalGuest: { type: Number, default: 1 },
 
     totalPrice: { type: Number, required: true },
 
