@@ -41,6 +41,7 @@ export const getRoomAvailabilityService = async (
   return {
     roomId,
     totalRooms: room.availableRooms,
+    totalGuests: room.guest,
     bookedRooms: totalBookedRooms,
     availableRooms,
     isAvailable: availableRooms > 0,

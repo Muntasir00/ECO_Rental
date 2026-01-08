@@ -83,8 +83,8 @@ type RouteFiles = {
     id: "root";
     page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/search" | "/booking" | "/booking/success/:id" | "/user-booking";
   };
-  "pages/index.tsx": {
-    id: "pages/index";
+  "pages/public/index.tsx": {
+    id: "pages/public/index";
     page: "/";
   };
   "layouts/main.tsx": {
@@ -175,7 +175,7 @@ type RouteFiles = {
 
 type RouteModules = {
   "root": typeof import("./app/root.tsx");
-  "pages/index": typeof import("./app/pages/index.tsx");
+  "pages/public/index": typeof import("./app/pages/public/index.tsx");
   "layouts/main": typeof import("./app/layouts/main.tsx");
   "layouts/guest": typeof import("./app/layouts/guest.tsx");
   "pages/auth/sign-in": typeof import("./app/pages/auth/sign-in.tsx");
