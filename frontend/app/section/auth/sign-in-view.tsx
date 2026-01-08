@@ -21,6 +21,7 @@ import {
 import {Input} from "~/components/ui/input"
 import {Checkbox} from "~/components/ui/checkbox"
 import {cn} from "~/lib/utils";
+import {Link} from "react-router";
 
 export type SignInSchemaType = z.infer<typeof SignInSchema>;
 
@@ -93,11 +94,11 @@ export function SignInView() {
                     </div>
 
                     {/* Content Wrapper */}
-                    <div className="absolute inset-0 z-10 flex items-center justify-center p-2 sm:p-6 overflow-y-auto">
+                    <div className="absolute inset-0 z-10 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
 
                         {/* Glass Card */}
                         <div
-                            className="w-full max-w-[450px] bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+                            className="w-full max-w-[450px] bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-3 sm:p-10 shadow-2xl relative overflow-hidden">
 
                             {/* Glossy Effect */}
                             <div
@@ -225,12 +226,12 @@ export function SignInView() {
                                                 )}
                                             />
 
-                                            <a
-                                                href="#"
+                                            <Link
+                                                to="#"
                                                 className="text-xs text-gray-300 hover:text-white hover:underline transition-colors"
                                             >
                                                 Forgot Your Password?
-                                            </a>
+                                            </Link>
                                         </div>
 
                                         {/* Submit Button */}
@@ -291,9 +292,9 @@ export function SignInView() {
 
                                 {/* 5. Footer */}
                                 <div className="mt-8 text-xs text-gray-400">
-                                    Don't Have An Account? <a href={paths.auth.jwt.signUp}
+                                    Don't Have An Account? <Link to={paths.auth.jwt.signUp}
                                                               className="text-white hover:text-[#E5555C] transition-colors font-medium">Register
-                                    Now.</a>
+                                    Now.</Link>
                                 </div>
 
                             </div>
