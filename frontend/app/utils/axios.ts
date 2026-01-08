@@ -67,5 +67,7 @@ export const endpoints = {
   rooms:{
     allRooms: '/rooms',
     singleRoom: '/rooms',
+    availability:'/availability/rooms',
+    bookings: '/bookings',
   }
 };

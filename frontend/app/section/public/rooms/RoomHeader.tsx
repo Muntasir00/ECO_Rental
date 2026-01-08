@@ -2,7 +2,7 @@ import React from 'react';
 
 const RoomHeader = () => {
     return (
-        <header className="relative w-full mt-[88px] min-h-[400px]">
+        <header className="relative w-full min-h-[400px]">
 
             <div className="absolute inset-0 w-full h-full">
                 <img

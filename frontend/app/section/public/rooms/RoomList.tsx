@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {rooms} from "~/pages/public/rooms/roomActions";
 import {Skeleton} from "~/components/ui/skeleton"; // Ensure this path is correct
 import {cn} from "~/lib/utils";
-import {Link} from "react-router"; // Standard shadcn utility
+import {Link} from "react-router";
+import {useContentStore} from "~/store/contentStore";
+import {useAuthContext} from "~/auth/hooks"; // Standard shadcn utility
 
 interface RoomImage {
     url: string;
@@ -38,6 +40,7 @@ interface ApiResponse {
 }
 
 const RoomList = () => {
+    const {authenticated} = useAuthContext();
     // State
     const [roomsData, setRoomsData] = useState<Room[]>([]);
     const [pagination, setPagination] = useState<PaginationData | null>(null);

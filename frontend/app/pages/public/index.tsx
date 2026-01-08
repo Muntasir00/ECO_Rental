@@ -9,6 +9,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "~/c
 import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Button} from "~/components/ui/button";
 import {Calendar} from "~/components/ui/calendar"
+import {Input} from "~/components/ui/input";
 
 const index = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -108,16 +109,7 @@ const index = () => {
                         <div className="flex flex-col gap-2 lg:border-r border-gray-200 lg:pr-6">
                             <label className="text-gray-500 text-sm font-medium">Where</label>
                             <div className="flex items-center justify-between cursor-pointer group">
-                                <Select>
-                                    <SelectTrigger className="w-full border-0 shadow-none" id="room">
-                                        <SelectValue placeholder="Select Type"/>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="1">01</SelectItem>
-                                        <SelectItem value="2">02</SelectItem>
-                                        <SelectItem value="3">03</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                <Input placeholder="Place Name" className="w-full"/>
                             </div>
                         </div>
 
@@ -194,7 +186,7 @@ const index = () => {
                                         <SelectTrigger className="w-full !border-0 shadow-none" id="room ">
                                             <SelectValue placeholder="Total Room"/>
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="w-full">
                                             <SelectItem value="1">01 Room</SelectItem>
                                             <SelectItem value="2">02 Rooms</SelectItem>
                                             <SelectItem value="3">03 Rooms</SelectItem>

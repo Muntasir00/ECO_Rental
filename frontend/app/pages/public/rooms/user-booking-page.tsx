@@ -1,30 +1,113 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import BookingGrid from './BookingGrid';
+import { myBookings } from "~/pages/public/rooms/roomActions";
+import { Skeleton } from "~/components/ui/skeleton";
 
-const bookingsData = [
-    {
-        id: 1,
-        title: "Executive Deluxe",
-        details: {size: "50 m²", beds: "2 bed", bath: "1 bathroom", extra: "balcony"},
-        image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 2,
-        title: "Premium Suite",
-        details: {size: "50 m²", beds: "1 bed", bath: "1 bathroom", extra: "balcony"},
-        image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 3,
-        title: "Premium Deluxe",
-        details: {size: "60 m²", beds: "1 bed", bath: "1 bathroom", extra: "balcony"},
-        image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    }
-];
+interface RoomImage {
+    url: string;
+    publicId: string;
+    _id: string;
+}
 
-const BookingsPage = () => {
-    // State to handle tab switching (mimicking Tabs functionality)
-    const [activeTab, setActiveTab] = useState("ongoing");
+interface Room {
+    _id: string;
+    name: string;
+    location: string;
+    size: number;
+    bedroom: number;
+    bathroom: number;
+    balcony: boolean;
+    availableRooms: number;
+    pricePerNight: number;
+    available: boolean;
+    guest: number;
+    images: RoomImage[];
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface BookingApiResponse {
+    _id: string;
+    user: string;
+    room: Room;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    checkIn: string;
+    checkOut: string;
+    discount: number;
+    totalGuest: number;
+    totalPrice: number;
+    status: 'ongoing' | 'completed' | 'cancelled' | string;
+    roomsBooked: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+// Transformed Data Interface for the Grid Component
+export interface BookingUIItem {
+    id: string;
+    title: string;
+    status: string;
+    checkOut: string;
+    details: {
+        size: string;
+        beds: string;
+        bath: string;
+        extra: string;
+    };
+    image: string;
+}
+
+const UserBookingPage: React.FC = () => {
+    const [activeTab, setActiveTab] = useState<'ongoing' | 'past'>("ongoing");
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [bookings, setBookings] = useState<BookingUIItem[]>([]);
+
+    useEffect(() => {
+        async function fetchMyBooking() {
+            try {
+                setIsLoading(true);
+                // Explicitly casting the response or defining return type in roomActions is recommended
+                const res: BookingApiResponse[] = await myBookings();
+
+                // Transform API data to match BookingGrid expected structure
+                const formattedData: BookingUIItem[] = Array.isArray(res)
+                    ? res.map((item) => ({
+                        id: item._id,
+                        title: item.room?.name || "Unknown Room",
+                        status: item.status,
+                        checkOut: item.checkOut,
+                        details: {
+                            size: item.room?.size ? `${item.room.size} m²` : "N/A",
+                            beds: item.room?.bedroom ? `${item.room.bedroom} bed` : "N/A",
+                            bath: item.room?.bathroom ? `${item.room.bathroom} bath` : "N/A",
+                            extra: item.room?.balcony ? "balcony" : ""
+                        },
+                        image: item.room?.images?.[0]?.url || "https://via.placeholder.com/400"
+                    }))
+                    : [];
+
+                setBookings(formattedData);
+            } catch (e) {
+                console.error("Failed to fetch bookings:", e);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchMyBooking();
+    }, []);
+
+    // Filter Logic
+    const filteredBookings = bookings.filter((booking) => {
+        if (activeTab === "ongoing") {
+            return booking.status === "ongoing";
+        } else {
+            // Past bookings logic (completed, cancelled, or specific past status)
+            return booking.status !== "ongoing";
+        }
+    });
 
     return (
         <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans text-[#1A1A1A]">
@@ -39,10 +122,8 @@ const BookingsPage = () => {
                 </div>
 
                 <div className="w-full">
-
                     {/* Tabs List / Triggers */}
-                    <div
-                        className="flex flex-col sm:flex-row gap-4 mb-8 border-b border-gray-100 pb-8 sm:border-none sm:pb-0">
+                    <div className="flex flex-col sm:flex-row gap-4 mb-8 border-b border-gray-100 pb-8 sm:border-none sm:pb-0">
                         <button
                             onClick={() => setActiveTab("ongoing")}
                             className={`cursor-pointer px-8 py-2.5 text-sm font-medium rounded-sm transition-all duration-200
@@ -66,24 +147,46 @@ const BookingsPage = () => {
                         </button>
                     </div>
 
-                    {activeTab === "ongoing" && (
-                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <BookingGrid data={bookingsData}/>
-                        </div>
-                    )}
-
-                    {activeTab === "past" && (
-                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <BookingGrid data={[...bookingsData].reverse()}/>
-                        </div>
-                    )}
-
+                    {/* Content Area */}
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 min-h-[300px]">
+                        {isLoading ? (
+                            <BookingsSkeleton />
+                        ) : filteredBookings.length > 0 ? (
+                            <BookingGrid data={filteredBookings} />
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+                                <p className="text-lg">No {activeTab} bookings found.</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
-
             </div>
         </div>
     );
 };
 
+// Skeleton Component
+const BookingsSkeleton: React.FC = () => {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+                <div key={i} className="flex flex-col space-y-3">
+                    {/* Image Placeholder */}
+                    <Skeleton className="h-[200px] w-full rounded-xl bg-gray-200" />
+                    <div className="space-y-2 p-2">
+                        {/* Title Placeholder */}
+                        <Skeleton className="h-6 w-3/4 bg-gray-200" />
+                        {/* Details Placeholder */}
+                        <div className="flex gap-2">
+                            <Skeleton className="h-4 w-12 bg-gray-200" />
+                            <Skeleton className="h-4 w-12 bg-gray-200" />
+                            <Skeleton className="h-4 w-12 bg-gray-200" />
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
 
-export default BookingsPage;
+export default UserBookingPage;

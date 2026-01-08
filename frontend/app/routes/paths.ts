@@ -3,7 +3,7 @@ import { paramCase } from '../utils/change-case';
 
 const ROOTS = {
   AUTH: '/auth',
-  Home: '/home',
+  Home: '/',
   Public: '/',
 };
 

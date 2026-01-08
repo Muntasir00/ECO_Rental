@@ -3,7 +3,8 @@ import {useParams} from "react-router";
 import {room as fetchRoomApi} from "~/pages/public/rooms/roomActions";
 import FacilitiesSection from "~/section/public/rooms/FacilitiesSection";
 import OtherRooms from "~/section/public/rooms/OtherRooms";
-import {Skeleton} from "~/components/ui/skeleton"; // Ensure path is correct
+import {Skeleton} from "~/components/ui/skeleton";
+import {CheckAvailability} from "~/pages/public/rooms/CheckAvailability"; // Ensure path is correct
 
 interface RoomImage {
     url: string;
@@ -218,49 +219,7 @@ const RoomDetails = () => {
                                 </div>
 
                                 {/* Form */}
-                                <form className="space-y-6">
-                                    {/* Check In */}
-                                    <div>
-                                        <label className="block text-xs text-gray-500 mb-2">Check in</label>
-                                        <div className="relative">
-                                            <input
-                                                type="date"
-                                                className="w-full bg-[#F3F4F6] text-sm text-gray-700 p-4 rounded-sm outline-none focus:ring-1 focus:ring-gray-300 appearance-none"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Check Out */}
-                                    <div>
-                                        <label className="block text-xs text-gray-500 mb-2">Check Out</label>
-                                        <div className="relative">
-                                            <input
-                                                type="date"
-                                                className="w-full bg-[#F3F4F6] text-sm text-gray-700 p-4 rounded-sm outline-none focus:ring-1 focus:ring-gray-300 appearance-none"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Buttons */}
-                                    <div className="pt-4 space-y-4">
-                                        <button type="button"
-                                                className="w-full bg-[#F3F4F6] text-gray-600 py-3 text-sm font-medium hover:bg-gray-200 transition-colors">
-                                            Check menu
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            disabled={!roomData.available}
-                                            className={`w-full text-white py-3 text-sm font-medium transition-colors shadow-md ${
-                                                roomData.available
-                                                    ? "bg-[#E5555C] hover:bg-[#d4444b]"
-                                                    : "bg-gray-400 cursor-not-allowed"
-                                            }`}
-                                        >
-                                            {roomData.available ? "Booking" : "Currently Unavailable"}
-                                        </button>
-                                    </div>
-                                </form>
+                                <CheckAvailability id={id || ""}/>
 
                             </div>
                         </div>

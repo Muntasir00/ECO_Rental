@@ -10,7 +10,7 @@ import {
     MenubarTrigger,
 } from '~/components/ui/menubar';
 
-import {Menu, X} from 'lucide-react';
+import {BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Menu, Sparkles, X} from 'lucide-react';
 import {
     Sheet,
     SheetContent,
@@ -25,6 +25,13 @@ import {useAuthContext} from 'app/auth/hooks';
 import {Button} from "~/components/ui/button";
 import {useState} from "react";
 import {Link} from "react-router";
+import {
+    DropdownMenu,
+    DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from "~/components/ui/dropdown-menu";
 
 const Navbar = () => {
     const router = useRouter();
@@ -103,34 +110,62 @@ const Navbar = () => {
                         <div className="hidden md:flex items-center gap-4">
                             {loading ? null : authenticated ? (
                                     <div className='flex gap-3 items-center'>
-                                        <Menubar>
-                                            <MenubarMenu>
-                                                <MenubarTrigger>
-                                                    <img src='/image/menu.svg' alt=''/>
-                                                </MenubarTrigger>
-                                                <MenubarContent>
-                                                    <MenubarItem>
-                                                        New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                                                    </MenubarItem>
-                                                    <MenubarItem>New Window</MenubarItem>
-                                                    <MenubarSeparator/>
-                                                    <MenubarItem>Share</MenubarItem>
-                                                    <MenubarSeparator/>
-                                                    <MenubarItem onClick={handleSignOut}>Logout</MenubarItem>
-                                                </MenubarContent>
-                                            </MenubarMenu>
-                                        </Menubar>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger>
+                                                <Avatar className="h-8 w-8 rounded-full">
+                                                    <AvatarImage src={"https://github.com/shadcn.png"}
+                                                                 alt={user?.username}/>
+                                                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                                                </Avatar>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent
+                                                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                                                align="end"
+                                                sideOffset={4}
+                                            >
+                                                <DropdownMenuLabel className="p-0 font-normal">
+                                                    <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                                                        <Avatar className="h-8 w-8 rounded-full">
+                                                            <AvatarImage src="https://github.com/shadcn.png"
+                                                                         alt={user?.username}/>
+                                                            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                                                        </Avatar>
+                                                        <div className="grid flex-1 text-left text-sm leading-tight">
+                                                            <span className="truncate font-medium">{user?.username}</span>
+                                                        </div>
+                                                    </div>
+                                                </DropdownMenuLabel>
+                                                <DropdownMenuSeparator/>
+                                                <DropdownMenuGroup>
+                                                    <DropdownMenuItem>
+                                                        <Sparkles/>
+                                                        Upgrade to Pro
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuGroup>
+                                                <DropdownMenuSeparator/>
+                                                <DropdownMenuGroup>
+                                                    <DropdownMenuItem>
+                                                        <BadgeCheck/>
+                                                        Account
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        <CreditCard/>
+                                                        Billing
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        <Bell/>
+                                                        Notifications
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuGroup>
+                                                <DropdownMenuSeparator/>
+                                                <DropdownMenuItem onClick={handleSignOut}>
+                                                    <LogOut/>
+                                                    Log out
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
 
-                                        <Avatar>
-                                            <AvatarImage
-                                                src='https://github.com/shadcn.png'
-                                                alt='User'
-                                                className='w-12'
-                                            />
-                                            <AvatarFallback>ACC</AvatarFallback>
-                                        </Avatar>
 
-                                        <p>{user?.username}</p>
                                     </div>
                                 )
                                 :
