@@ -68,6 +68,11 @@ type Pages = {
   "/booking": {
     params: {};
   };
+  "/booking/success/:id": {
+    params: {
+      "id": string;
+    };
+  };
   "/user-booking": {
     params: {};
   };
@@ -76,7 +81,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/search" | "/booking" | "/user-booking";
+    page: "/" | "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/search" | "/booking" | "/booking/success/:id" | "/user-booking";
   };
   "pages/index.tsx": {
     id: "pages/index";
@@ -84,7 +89,7 @@ type RouteFiles = {
   };
   "layouts/main.tsx": {
     id: "layouts/main";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/search" | "/booking" | "/user-booking";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/search" | "/booking" | "/booking/success/:id" | "/user-booking";
   };
   "layouts/guest.tsx": {
     id: "layouts/guest";
@@ -148,7 +153,7 @@ type RouteFiles = {
   };
   "layouts/protected.tsx": {
     id: "layouts/protected";
-    page: "/search" | "/booking" | "/user-booking";
+    page: "/search" | "/booking" | "/booking/success/:id" | "/user-booking";
   };
   "pages/search.tsx": {
     id: "pages/search";
@@ -157,6 +162,10 @@ type RouteFiles = {
   "pages/public/rooms/BookingPage.tsx": {
     id: "pages/public/rooms/BookingPage";
     page: "/booking";
+  };
+  "pages/public/rooms/BookingSuccessPage.tsx": {
+    id: "pages/public/rooms/BookingSuccessPage";
+    page: "/booking/success/:id";
   };
   "pages/public/rooms/user-booking-page.tsx": {
     id: "pages/public/rooms/user-booking-page";
@@ -186,5 +195,6 @@ type RouteModules = {
   "layouts/protected": typeof import("./app/layouts/protected.tsx");
   "pages/search": typeof import("./app/pages/search.tsx");
   "pages/public/rooms/BookingPage": typeof import("./app/pages/public/rooms/BookingPage.tsx");
+  "pages/public/rooms/BookingSuccessPage": typeof import("./app/pages/public/rooms/BookingSuccessPage.tsx");
   "pages/public/rooms/user-booking-page": typeof import("./app/pages/public/rooms/user-booking-page.tsx");
 };

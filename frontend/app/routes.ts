@@ -31,6 +31,7 @@ export default [
             // route('/', 'pages/Home/Homeview.tsx'),
             route('/search', 'pages/search.tsx'),
             route('booking', 'pages/public/rooms/BookingPage.tsx'),
+            route('booking/success/:id', 'pages/public/rooms/BookingSuccessPage.tsx'),
             route('user-booking', 'pages/public/rooms/user-booking-page.tsx'),
             // route('/dashboard/overview', 'pages/dashboard/overview.tsx'),
             // route('/projects', 'pages/projects/index.tsx'),
