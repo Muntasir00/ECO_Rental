@@ -61,7 +61,7 @@ export const SummaryView = ({data, onPrev, onSubmit, isLoading}: any) => {
             </div>
 
             <div className="flex justify-end gap-4 flex-wrap">
-                <Button type="button" onClick={onPrev} variant="outline"
+                <Button type="button" onClick={onPrev} variant="outline" disabled={isLoading}
                         className="px-10 py-6 border-[#E5555C] text-[#E5555C] hover:bg-red-50  w-full md:w-auto">
                     Prev
                 </Button>

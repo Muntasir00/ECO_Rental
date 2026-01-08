@@ -16,11 +16,11 @@ export interface BookingPayload {
     // lastName: string;
     name: string;
     email: string;
-    phone: string;
+    phoneNumber: string;
     checkIn: string;
     checkOut: string;
     roomsBooked: number;
-    totalGuest: number;
+    totalGuest: string;
     // referralCode?: string;
     // paymentMethod: string;
 }
@@ -85,11 +85,11 @@ const BookingPage = () => {
             const payload: BookingPayload = {
                 name: formData.firstName + " " + formData.lastName,
                 email: formData.email,
-                phone: formData.phone,
+                phoneNumber: formData.phone,
                 checkIn: format(formData.checkIn, "yyyy-MM-dd"),
                 checkOut: format(formData.checkOut, "yyyy-MM-dd"),
                 roomsBooked: Number(formData.totalRoom),
-                totalGuest: Number(formData.totalGuest),
+                totalGuest: String(formData.totalGuest),
             };
 
             console.log("Submitting Payload:", payload);
@@ -101,7 +101,9 @@ const BookingPage = () => {
             toast.success("Booking confirmed successfully!");
 
             // Navigate to success page
-            // navigate(`/booking/success/${result._id}`);
+            navigate(`/booking/success/${result.booking._id}`, {
+                state: result
+            });
 
         } catch (error) {
             console.error("Booking failed:", error);
@@ -145,7 +147,7 @@ const BookingPage = () => {
                                     <BookingInfoForm
                                         defaultValues={formData}
                                         totalRooms={paramAvailableRooms}
-                                        totalGuest={paramTotalGuests}
+                                        totalGuests={paramTotalGuests}
                                         onNext={handleNextStep}
                                         onPrev={handlePrevStep}
                                     />

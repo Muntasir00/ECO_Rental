@@ -31,7 +31,7 @@ export const BookingInfoForm = ({
                                 }: {
     defaultValues: any;
     totalRooms: number | string | null | undefined;
-    totalGuest: number | null | string | undefined;
+    totalGuests: number | null | string | undefined;
     onNext: (data: any) => void;
     onPrev: () => void;
 }) => {

@@ -47,7 +47,7 @@ const index = () => {
         return () => clearInterval(timer);
     }, [slides.length]);
 
-    return <div className="min-h-screen mt-[88px]">
+    return <div className="min-h-screen">
         <div className="relative w-full bg-[#FAFAFA] font-sans">
 
             <div className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
