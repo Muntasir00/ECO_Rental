@@ -2,7 +2,7 @@ import React from "react";
 
 export const RoomSummaryCard = () => {
     return (
-        <div className="lg:col-span-4 bg-white p-2">
+        <div className="order-2 lg:order-1 lg:col-span-4 bg-white p-2">
             <div className="rounded-lg overflow-hidden border border-gray-100 shadow-sm sticky top-8">
                 <div className="h-56 overflow-hidden relative">
                     <img

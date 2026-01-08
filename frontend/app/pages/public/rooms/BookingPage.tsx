@@ -129,7 +129,7 @@ const BookingPage = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                         <RoomSummaryCard/>
 
-                        <div className="lg:col-span-8">
+                        <div className="order-1 lg:order-2 lg:col-span-8">
                             <div className="bg-white min-h-[400px] p-6 rounded-lg shadow-sm">
 
                                 {/* STEP 1: Personal Data (Pass existing data to persist input if user goes back) */}
