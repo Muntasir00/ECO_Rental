@@ -19,6 +19,8 @@ export const getMe = async (req: Request, res: Response) => {
     profile,
   });
 };
+
+// Update profile controller
 export const updateProfile = async (req: Request, res: Response) => {
   await connectDB();
   try {
@@ -34,13 +36,22 @@ export const updateProfile = async (req: Request, res: Response) => {
 
     let profileImageUrl, identityFileUrl;
 
+    // Upload from buffer (like blog)
     if (profileImage) {
-      const upload = await cloudinary.uploader.upload(profileImage.path);
+      const upload = await cloudinary.uploader.upload(
+        `data:${profileImage.mimetype};base64,${profileImage.buffer.toString(
+          'base64'
+        )}`
+      );
       profileImageUrl = upload.secure_url;
     }
 
     if (identityFile) {
-      const upload = await cloudinary.uploader.upload(identityFile.path);
+      const upload = await cloudinary.uploader.upload(
+        `data:${identityFile.mimetype};base64,${identityFile.buffer.toString(
+          'base64'
+        )}`
+      );
       identityFileUrl = upload.secure_url;
     }
 

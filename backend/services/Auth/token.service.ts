@@ -11,7 +11,7 @@ export const generateAccessToken = (userId: string, role: string) => {
   const access_secret = process.env.JWT_ACCESS_SECRET;
   if (!access_secret) throw new Error('JWT_ACCESS_SECRET not set');
 
-  const expiresIn = ACCESS_EXPIRE ?? '1h';
+  const expiresIn = ACCESS_EXPIRE ?? '3h';
 
   return jwt.sign(
     {

@@ -52,6 +52,9 @@ export function isValidToken(accessToken: string) {
 // ----------------------------------------------------------------------
 
 export function tokenExpired(exp: number) {
+  if (!exp) {
+    exp = 3;
+  }
   const currentTime = Date.now();
   const timeLeft = exp * 1000 - currentTime;
 
