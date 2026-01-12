@@ -5,6 +5,8 @@ import {
   getUserBookingsService,
 } from '../services/Room/booking.service.js';
 import { connectDB } from '../config/db.js';
+import { sendBookingEmail } from '../services/Room/bookingMail.js';
+import { Room } from '../models/room.model.js';
 
 export const bookRoom = async (req: Request, res: Response) => {
   await connectDB();
@@ -14,13 +16,27 @@ export const bookRoom = async (req: Request, res: Response) => {
   if (!req.userId) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
-  const booking = await createBookingService(
-    req.userId,
-    req.params.roomId,
-    req.body
-  );
+  try {
+    const { booking, pricing } = await createBookingService(
+      req.userId,
+      req.params.roomId,
+      req.body
+    );
 
-  res.status(201).json(booking);
+    // Fetch room info to send in email
+    const room = await Room.findById(req.params.roomId);
+
+    // Send booking confirmation email
+    await sendBookingEmail(booking, room);
+
+    res.status(201).json({
+      booking,
+      pricing,
+      message: 'Booking successful, confirmation email sent!',
+    });
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
 export const getMyBookings = async (req: Request, res: Response) => {
