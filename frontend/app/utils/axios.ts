@@ -64,6 +64,10 @@ export const endpoints = {
     allBlogs: '/blogs',
     blog: '/blogs',
   },
+  user:{
+    profile: '/profiles/me',
+    profileUpdate: '/profiles/update',
+  },
   rooms:{
     allRooms: '/rooms',
     singleRoom: '/rooms',

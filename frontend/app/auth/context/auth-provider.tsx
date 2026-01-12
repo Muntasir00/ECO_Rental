@@ -1,15 +1,12 @@
-// auth/provider.tsx
 import { useMemo, useEffect, useCallback } from 'react';
-
 import { useSetState } from 'app/hooks/use-set-state';
-
-import axios, { endpoints } from 'app/utils/axios';
-
+import axios from 'app/utils/axios'; // Ensure your axios instance is imported
 import { STORAGE_KEY } from './constant';
 import { AuthContext } from './auth-context';
-import { setSession, isValidToken, jwtDecode } from './utils'; // ensure jwtDecode exported
+import { setSession, isValidToken } from './utils';
+import type {AuthState, ProfileApiResponse} from '../types';
+import {profiles} from "~/pages/public/profile/profileActions";
 
-import type { AuthState } from '../types';
 
 type Props = {
   children: React.ReactNode;
@@ -21,40 +18,58 @@ export function AuthProvider({ children }: Props) {
     loading: true,
   });
 
+  // =========================================================
+  // CORE SESSION CHECKER (Updated with Profile API)
+  // =========================================================
   const checkUserSession = useCallback(async () => {
     try {
       const accessToken = sessionStorage.getItem(STORAGE_KEY);
 
+      // ১. প্রথমে চেক করি টোকেন আছে কিনা এবং তার মেয়াদ আছে কিনা (Client-side check)
       if (accessToken && isValidToken(accessToken)) {
-        // ensure axios header is set and sessionStorage is consistent
-        await setSession(accessToken);
 
-        // No /me endpoint — decode token to create a minimal user object
+        // ২. Axios Header এ টোকেন সেট করি
+        setSession(accessToken);
+
         try {
-          const decoded = jwtDecode(accessToken) as any;
-          // decoded should include things like id, email, role, exp, etc.
-          const minimalUser = {
-            id: decoded?.id ?? decoded?._id ?? null,
-            email: decoded?.email ?? null,
-            // add any property you store in token: username, role, etc.
-            // NOTE: this is only minimal local user, not validated server-side
-            accessToken,
+          // ৩. সার্ভার থেকে লেটেস্ট ডেটা আনি
+          // আপনার API Endpoint টি বসান (যেমন: /profiles/me অথবা /auth/me)
+          const response:ProfileApiResponse = await profiles();
+
+          const { user: apiUser, profile: apiProfile } = response;
+
+          // ৪. User এবং Profile ডেটা মার্জ (Merge) করে স্টেটে রাখি
+          // এতে আপনি auth.user.fullName এবং auth.user.email দুটোই এক্সেস করতে পারবেন
+          const combinedUser = {
+            ...apiUser,        // user fields (email, role, etc)
+            ...apiProfile,     // profile fields (fullName, address, etc)
+            id: apiUser._id,   // standardizing ID access
+            accessToken,       // keep the token handy
           };
 
-          setState({ user: minimalUser as any, loading: false });
-        } catch (err) {
-          // if decoding fails, clear user
-          console.error('jwt decode failed', err);
-          setState({ user: null, loading: false });
+          setState({ user: combinedUser as any, loading: false });
+
+        } catch (error) {
+          console.error('Session validation failed:', error);
+          // টোকেন ভ্যালিড কিন্তু সার্ভার এরর দিয়েছে (যেমন 401 Unauthorized)
+          // তার মানে টোকেনটি সার্ভার সাইডে বাতিল হয়েছে, তাই লগআউট করাতে হবে
+          doLogout();
         }
       } else {
-        setState({ user: null, loading: false });
+        // টোকেন নেই বা মেয়াদ শেষ
+        doLogout();
       }
     } catch (error) {
-      console.error(error);
-      setState({ user: null, loading: false });
+      console.error('Session check error:', error);
+      doLogout();
     }
   }, [setState]);
+
+  // Helper function to clear state
+  const doLogout = () => {
+    setSession(null);
+    setState({ user: null, loading: false });
+  };
 
   useEffect(() => {
     checkUserSession();
@@ -64,41 +79,49 @@ export function AuthProvider({ children }: Props) {
   // ----------------------------------------------------------------------
 
   const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
-
   const status = state.loading ? 'loading' : checkAuthenticated;
 
-  // initSession: called after successful signIn to set full user & token
+  // =========================================================
+  // LOGIN / INIT SESSION
+  // =========================================================
   const initSession = useCallback(
-    (userData: any, accessToken: string) => {
-      try {
-        // persist token & axios header
-        sessionStorage.setItem(STORAGE_KEY, accessToken);
-        axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+      async (userData: any, accessToken: string) => {
+        try {
+          setSession(accessToken);
 
-        // set full user from sign-in response
-        setState({ user: { ...userData, accessToken }, loading: false });
-      } catch (err) {
-        console.error('initSession error', err);
-      }
-    },
-    [setState]
+          // অপশন ১: যদি লগইন রেসপন্সেই প্রোফাইল ডেটা থাকে, সরাসরি সেট করুন:
+          // setState({ user: { ...userData, accessToken }, loading: false });
+
+          // অপশন ২ (Recommended): লগইনের পরেও ফ্রেশ প্রোফাইল ডেটা আনতে checkUserSession কল করুন
+          // এটি নিশ্চিত করে যে লগইন এবং রিলোড এর ডেটা স্ট্রাকচার একই থাকবে।
+          await checkUserSession();
+
+        } catch (err) {
+          console.error('initSession error', err);
+          doLogout();
+        }
+      },
+      [checkUserSession] // depend on checkUserSession
   );
 
+  // =========================================================
+  // MEMOIZED CONTEXT VALUE
+  // =========================================================
   const memoizedValue = useMemo(
-    () => ({
-      user: state.user ? { ...state.user } : null,
-      checkUserSession,
-      initSession,
-      loading: status === 'loading',
-      authenticated: status === 'authenticated',
-      unauthenticated: status === 'unauthenticated',
-    }),
-    [checkUserSession, state.user, status, initSession]
+      () => ({
+        user: state.user ? { ...state.user } : null,
+        checkUserSession,
+        initSession,
+        loading: status === 'loading',
+        authenticated: status === 'authenticated',
+        unauthenticated: status === 'unauthenticated',
+      }),
+      [checkUserSession, state.user, status, initSession]
   );
 
   return (
-    <AuthContext.Provider value={memoizedValue}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={memoizedValue}>
+        {children}
+      </AuthContext.Provider>
   );
 }

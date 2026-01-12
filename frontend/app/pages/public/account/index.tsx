@@ -1,8 +1,10 @@
 import React from 'react';
 import {User, Shield, CreditCard, Bell} from 'lucide-react';
 import {Link} from "react-router";
+import {useAuthContext} from "~/auth/hooks";
 
 const AccountPage = () => {
+    const {user, loading} = useAuthContext();
     // Data for the option cards
     const accountOptions = [
         {
@@ -31,6 +33,10 @@ const AccountPage = () => {
         }
     ];
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans text-[#1A1A1A]">
             <div className="max-w-7xl mx-auto">
@@ -40,7 +46,7 @@ const AccountPage = () => {
                             Account
                         </h1>
                         <p className="text-gray-500 font-light">
-                            Welcome Aftab uz zaman
+                            Welcome {user?.fullName}
                         </p>
                     </div>
 

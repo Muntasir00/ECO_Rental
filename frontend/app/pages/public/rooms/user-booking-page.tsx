@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BookingGrid from './BookingGrid';
 import { myBookings } from "~/pages/public/rooms/roomActions";
 import { Skeleton } from "~/components/ui/skeleton";
+import {useAuthContext} from "~/auth/hooks";
 
 interface RoomImage {
     url: string;
@@ -63,6 +64,7 @@ const UserBookingPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'ongoing' | 'past'>("ongoing");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [bookings, setBookings] = useState<BookingUIItem[]>([]);
+    const { user } = useAuthContext();
 
     useEffect(() => {
         async function fetchMyBooking() {
@@ -117,7 +119,7 @@ const UserBookingPage: React.FC = () => {
                         Bookings
                     </h1>
                     <p className="text-gray-500 font-light text-sm">
-                        Welcome Aftab uz zaman
+                        Welcome {user?.fullName}
                     </p>
                 </div>
 

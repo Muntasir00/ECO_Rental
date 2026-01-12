@@ -6,22 +6,16 @@ import StatsSection from "~/pages/public/StatsSection";
 import FacilitiesList from "~/pages/public/FacilitiesList";
 import Testimonial from "~/pages/public/Testimonial";
 import BlogSection from "~/pages/public/BlogSection";
-import { useAuthContext } from 'app/auth/hooks';
 import HeroSlider from "~/pages/HeroSlider";
 import BookingSearchBox from "~/pages/BookingSearchBox";
 
 export default function IndexRedirect() {
-    const { authenticated, loading } = useAuthContext();
-
-    // Auth logic যদি দরকার হয় এখানে আনকমেন্ট (Uncomment) করতে পারেন
 
     return (
         <main>
             <Navbar />
-
             <div className="min-h-screen">
                 <div className="relative w-full bg-[#FAFAFA] font-sans">
-
                     {/* Hero Section */}
                     <HeroSlider />
 

@@ -77,8 +77,8 @@ const PropertyListing = () => {
 
                         roomsData.length > 0 ? (
                             roomsData.slice(0, 9).map((room) => (
-                                <Link to={`/room/${room._id}`}>
-                                    <div key={room._id} className="group cursor-pointer flex flex-col gap-4">
+                                <Link to={`/room/${room._id}`} key={room._id}>
+                                    <div  className="group cursor-pointer flex flex-col gap-4">
 
                                         {/* IMAGE CONTAINER */}
                                         <div

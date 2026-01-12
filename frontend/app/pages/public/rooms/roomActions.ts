@@ -51,6 +51,5 @@ export const searchRooms = async ({location, bedroom, checkIn, checkOut, page}:S
         }
     });
     const {data} = res;
-    console.log(data);
     return data;
 }
