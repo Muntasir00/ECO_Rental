@@ -23,13 +23,13 @@ export default [
             route('about-us', 'pages/public/about.tsx'),
             route('rooms', 'pages/public/rooms/index.tsx'),
             route('room/:id', 'pages/public/rooms/room-detail.tsx'),
+            route('/search', 'pages/search.tsx'),
             // route('booking', 'pages/public/rooms/BookingPage.tsx'),
         ]),
 
         // Protected routes: dashboard and other app pages
         layout('layouts/protected.tsx', [
             // route('/', 'pages/Home/Homeview.tsx'),
-            route('/search', 'pages/search.tsx'),
             route('booking', 'pages/public/rooms/BookingPage.tsx'),
             route('booking/success/:id', 'pages/public/rooms/BookingSuccessPage.tsx'),
             route('user-booking', 'pages/public/rooms/user-booking-page.tsx'),

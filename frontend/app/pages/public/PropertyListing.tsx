@@ -1,195 +1,178 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Heart, MapPin, BedDouble, Bath, Users} from 'lucide-react';
+import {rooms} from "~/pages/public/rooms/roomActions";
+import {Skeleton} from "~/components/ui/skeleton";
+import {Link} from "react-router";
+
+interface RoomImage {
+    url: string;
+    publicId: string;
+    _id: string;
+}
+
+export interface Room {
+    _id: string;
+    name: string;
+    location: string;
+    size: number;
+    bedroom: number;
+    bathroom: number;
+    balcony: boolean;
+    availableRooms: number;
+    pricePerNight: number;
+    available: boolean;
+    guest: number;
+    images: RoomImage[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+interface ApiResponse {
+    rooms: Room[];
+}
 
 const PropertyListing = () => {
-    // Mock Data
-    const properties = [
-        {
-            id: 1,
-            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "Serenity at Whispering Pines Retreat",
-            address: "3091 Ranchview Dr. Richardson, California",
-            beds: 5,
-            baths: 6,
-            guests: 6
-        },
-        {
-            id: 2,
-            image: "https://images.unsplash.com/photo-1600596542815-e32cbb1e3db9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "Sunset Haven on the Emerald Bay",
-            address: "1901 Thornridge Cir. Shiloh, Hawaii",
-            beds: 4,
-            baths: 5,
-            guests: 4
-        },
-        {
-            id: 3,
-            image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "Whispering Waters by the Seaside",
-            address: "8391 Elgin St. Celina, Delaware",
-            beds: 6,
-            baths: 8,
-            guests: 10
-        },
-        {
-            id: 4,
-            image: "https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "The Dreamy Escape at Golden Shores",
-            address: "2118 Thornridge Cir. Syracuse, Connecticut",
-            beds: 6,
-            baths: 6,
-            guests: 8
-        },
-        {
-            id: 5,
-            image: "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "Enchanted Hideaway on Tranquil Hill",
-            address: "4517 Washington Ave. Manchester, Kentucky",
-            beds: 5,
-            baths: 6,
-            guests: 6
-        },
-        {
-            id: 6,
-            image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "The Oasis by Crystal Clear Waters",
-            address: "4140 Parker Rd. Allentown, New Mexico",
-            beds: 4,
-            baths: 5,
-            guests: 5
-        },
-        // Adding more items to simulate the scrolling grid
-        {
-            id: 7,
-            image: "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "Modern Retreat in the Mountains",
-            address: "8821 West Fork St. Great Falls, Montana",
-            beds: 3,
-            baths: 2,
-            guests: 4
-        },
-        {
-            id: 8,
-            image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1569913486587-b93d497db307?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "Luxury Villa with Ocean View",
-            address: "3421 Ocean Dr. Miami, Florida",
-            beds: 7,
-            baths: 8,
-            guests: 12
-        },
-        {
-            id: 9,
-            image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-            rating: "5.0",
-            title: "Cozy Cottage by the Lake",
-            address: "12 Lakeview Ln. Burlington, Vermont",
-            beds: 2,
-            baths: 1,
-            guests: 3
+
+    const [roomsData, setRoomsData] = useState<Room[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Fetch Function
+    const fetchRooms = async (pageNumber: number) => {
+        setIsLoading(true);
+        try {
+            // @ts-ignore
+            const res: ApiResponse = await rooms(pageNumber);
+            setRoomsData(res.rooms);
+        } catch (error) {
+            console.error("Failed to fetch rooms:", error);
+        } finally {
+            setIsLoading(false);
         }
-    ];
+    };
+
+    // Initial Load
+    useEffect(() => {
+        fetchRooms(1);
+    }, []);
 
     return (
         <div className="bg-white min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans text-[#1A1A1A]">
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 gap-y-12">
-                    {properties.map((property) => (
-                        <div key={property.id} className="group cursor-pointer flex flex-col gap-4">
+                    {isLoading ? (
+                        Array.from({length: 9}).map((_, index) => (
+                            <div key={index} className="flex flex-col">
+                                {/* Image Skeleton */}
+                                <Skeleton className="w-full h-64 mb-4 rounded-none bg-gray-200"/>
 
-                            {/* IMAGE CONTAINER */}
-                            <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 shadow-sm">
-
-                                {/* Main Image */}
-                                <img
-                                    src={property.image}
-                                    alt={property.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-
-                                {/* Heart Icon (Top Right) */}
-                                <button
-                                    className="absolute top-4 right-4 bg-white/90 hover:bg-white p-2 rounded-full shadow-sm transition-colors text-gray-700 hover:text-red-500">
-                                    <Heart className="w-5 h-5"/>
-                                </button>
-
-                                {/* Profile Avatar (Bottom Left Overlay) */}
-                                <div className="absolute bottom-4 left-4">
-                                    <img
-                                        src={property.avatar}
-                                        alt="Host"
-                                        className="w-12 h-12 rounded-xl border-[3px] border-white object-cover shadow-md"
-                                    />
+                                {/* Text Skeleton */}
+                                <div className="space-y-3">
+                                    <Skeleton className="h-6 w-3/4 bg-gray-200"/>
+                                    <Skeleton className="h-4 w-1/2 bg-gray-200"/>
                                 </div>
                             </div>
+                        ))
+                    ) : (
 
-                            {/* TEXT CONTENT */}
-                            <div className="flex flex-col gap-2">
+                        roomsData.length > 0 ? (
+                            roomsData.slice(0, 9).map((room) => (
+                                <Link to={`/room/${room._id}`}>
+                                    <div key={room._id} className="group cursor-pointer flex flex-col gap-4">
 
-                                {/* Rating & Title Row */}
-                                <div className="flex items-start gap-2">
-                                    {/* Rating Badge */}
-                                    <div
-                                        className="flex items-center gap-1 bg-pink-100 text-[#E5555C] px-2 py-1 rounded-md text-xs font-bold mt-1">
-                                        <span>★</span>
-                                        <span>{property.rating}</span>
+                                        {/* IMAGE CONTAINER */}
+                                        <div
+                                            className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 shadow-sm">
+
+                                            {/* Main Image - JSON এর images array থেকে প্রথম ছবি নেওয়া হয়েছে */}
+                                            <img
+                                                src={room.images[0]?.url}
+                                                alt={room.name}
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                            />
+
+                                            {/* Heart Icon (Top Right) */}
+                                            <button
+                                                className="absolute top-4 right-4 bg-white/90 hover:bg-white p-2 rounded-full shadow-sm transition-colors text-gray-700 hover:text-red-500">
+                                                <Heart className="w-5 h-5"/>
+                                            </button>
+
+                                            {/* Profile Avatar (Bottom Left Overlay) - ডামি ইমেজ */}
+                                            <div className="absolute bottom-4 left-4">
+                                                <img
+                                                    src="https://i.pravatar.cc/150?img=32"
+                                                    alt="Host"
+                                                    className="w-12 h-12 rounded-xl border-[3px] border-white object-cover shadow-md"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* TEXT CONTENT */}
+                                        <div className="flex flex-col gap-2">
+
+                                            {/* Rating & Title Row */}
+                                            <div className="flex items-start gap-2">
+                                                {/* Rating Badge - ডামি ভ্যালু */}
+                                                <div
+                                                    className="flex items-center gap-1 bg-pink-100 text-[#E5555C] px-2 py-1 rounded-md text-xs font-bold mt-1">
+                                                    <span>★</span>
+                                                    <span>4.8</span>
+                                                </div>
+
+                                                {/* Title - JSON এর name */}
+                                                <h3 className="font-serif text-lg font-medium leading-tight group-hover:text-[#E5555C] transition-colors line-clamp-1">
+                                                    {room.name}
+                                                </h3>
+                                            </div>
+
+                                            {/* Address - JSON এর location */}
+                                            <div className="flex items-center gap-1 text-gray-500 text-sm">
+                                                <MapPin className="w-4 h-4 text-gray-400"/>
+                                                <span className="truncate">{room.location}</span>
+                                            </div>
+
+                                            {/* Amenities Row */}
+                                            <div className="flex items-center gap-4 text-gray-500 text-sm mt-1">
+                                                <div className="flex items-center gap-1.5">
+                                                    <BedDouble className="w-4 h-4 text-gray-400"/>
+                                                    <span>{room.bedroom} beds</span>
+                                                </div>
+                                                <div className="flex items-center gap-1.5">
+                                                    <Bath className="w-4 h-4 text-gray-400"/>
+                                                    <span>{room.bathroom} baths</span>
+                                                </div>
+                                                <div className="flex items-center gap-1.5">
+                                                    <Users className="w-4 h-4 text-gray-400"/>
+                                                    <span>{room?.guest} Guests</span>
+                                                </div>
+                                            </div>
+
+                                            {/* Price Display (Optional - যেহেতু আপনার ডেটায় আছে) */}
+                                            <div className="font-semibold text-lg mt-1">
+                                                ${room.pricePerNight} <span
+                                                className="text-gray-400 text-sm font-normal">/ night</span>
+                                            </div>
+                                        </div>
+
                                     </div>
-
-                                    {/* Title */}
-                                    <h3 className="font-serif text-lg font-medium leading-tight group-hover:text-[#E5555C] transition-colors">
-                                        {property.title}
-                                    </h3>
-                                </div>
-
-                                {/* Address */}
-                                <div className="flex items-center gap-1 text-gray-500 text-sm">
-                                    <MapPin className="w-4 h-4 text-gray-400"/>
-                                    <span className="truncate">{property.address}</span>
-                                </div>
-
-                                {/* Amenities Row */}
-                                <div className="flex items-center gap-4 text-gray-500 text-sm mt-1">
-                                    <div className="flex items-center gap-1.5">
-                                        <BedDouble className="w-4 h-4 text-gray-400"/>
-                                        <span>{property.beds} bedrooms</span>
-                                    </div>
-                                    <div className="flex items-center gap-1.5">
-                                        <Bath className="w-4 h-4 text-gray-400"/>
-                                        <span>{property.baths} baths</span>
-                                    </div>
-                                    <div className="flex items-center gap-1.5">
-                                        <Users className="w-4 h-4 text-gray-400"/>
-                                        <span>{property.guests} Guests</span>
-                                    </div>
-                                </div>
+                                </Link>
+                            ))
+                        ) : (
+                            <div className="col-span-full text-center py-10 text-gray-500">
+                                No rooms found.
                             </div>
-
-                        </div>
-                    ))}
+                        )
+                    )}
                 </div>
 
                 <div className="mt-20 flex flex-col items-center gap-4">
                     <p className="text-sm text-gray-500 font-medium">Would like to see more?</p>
-                    <button
-                        className="bg-[#E5555C] text-white px-8 py-3 rounded-md font-medium shadow-lg shadow-red-100 hover:bg-[#d4444b] transition-all transform active:scale-95">
-                        Continue Browsing
-                    </button>
+                    <Link to="/rooms" className="cursor-pointer">
+                        <button
+                            className="cursor-pointer bg-[#E5555C] text-white px-8 py-3 rounded-md font-medium shadow-lg shadow-red-100 hover:bg-[#d4444b] transition-all transform active:scale-95">
+                            Continue Browsing
+                        </button>
+                    </Link>
                 </div>
 
             </div>

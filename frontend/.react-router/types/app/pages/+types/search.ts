@@ -16,8 +16,8 @@ type Matches = [{
   id: "layouts/main";
   module: typeof import("../../layouts/main.js");
 }, {
-  id: "layouts/protected";
-  module: typeof import("../../layouts/protected.js");
+  id: "layouts/guest";
+  module: typeof import("../../layouts/guest.js");
 }, {
   id: "pages/search";
   module: typeof import("../search.js");

@@ -93,7 +93,7 @@ type RouteFiles = {
   };
   "layouts/guest.tsx": {
     id: "layouts/guest";
-    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id";
+    page: "/auth/sign-in" | "/auth/sign-up" | "/verify/:token" | "/auth/change-password" | "/auth/forgot-password" | "/auth/verify-otp" | "/account" | "/profile" | "/blogs" | "/blog/:id" | "/contact-us" | "/about-us" | "/rooms" | "/room/:id" | "/search";
   };
   "pages/auth/sign-in.tsx": {
     id: "pages/auth/sign-in";
@@ -151,13 +151,13 @@ type RouteFiles = {
     id: "pages/public/rooms/room-detail";
     page: "/room/:id";
   };
-  "layouts/protected.tsx": {
-    id: "layouts/protected";
-    page: "/search" | "/booking" | "/booking/success/:id" | "/user-booking";
-  };
   "pages/search.tsx": {
     id: "pages/search";
     page: "/search";
+  };
+  "layouts/protected.tsx": {
+    id: "layouts/protected";
+    page: "/booking" | "/booking/success/:id" | "/user-booking";
   };
   "pages/public/rooms/BookingPage.tsx": {
     id: "pages/public/rooms/BookingPage";
@@ -192,8 +192,8 @@ type RouteModules = {
   "pages/public/about": typeof import("./app/pages/public/about.tsx");
   "pages/public/rooms/index": typeof import("./app/pages/public/rooms/index.tsx");
   "pages/public/rooms/room-detail": typeof import("./app/pages/public/rooms/room-detail.tsx");
-  "layouts/protected": typeof import("./app/layouts/protected.tsx");
   "pages/search": typeof import("./app/pages/search.tsx");
+  "layouts/protected": typeof import("./app/layouts/protected.tsx");
   "pages/public/rooms/BookingPage": typeof import("./app/pages/public/rooms/BookingPage.tsx");
   "pages/public/rooms/BookingSuccessPage": typeof import("./app/pages/public/rooms/BookingSuccessPage.tsx");
   "pages/public/rooms/user-booking-page": typeof import("./app/pages/public/rooms/user-booking-page.tsx");
