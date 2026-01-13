@@ -112,7 +112,7 @@ export function PasswordChangeView() {
           </div>
 
           <div className='flex flex-col gap-3 justify-center items-center'>
-            <p className='text-[40px] text-[#E14453] font-semibold text-center font-manrope'>
+            <p className='text-[40px] text-[#B83E25] font-semibold text-center font-manrope'>
               Welcome Back!
             </p>
             <p className='font-normal text-[18px] font-manrope text-[#FFFFFF]'>
@@ -172,7 +172,7 @@ export function PasswordChangeView() {
               <Button
                 type='submit'
                 disabled={isSubmitting}
-                className='w-full py-3 px-6 bg-[#E14453]'
+                className='w-full py-3 px-6 bg-[#B83E25]'
               >
                 {' '}
                 {isSubmitting ? 'Submitting…' : 'Log in now'}

@@ -114,13 +114,13 @@ const PropertyListing = () => {
                                             <div className="flex items-start gap-2">
                                                 {/* Rating Badge - ডামি ভ্যালু */}
                                                 <div
-                                                    className="flex items-center gap-1 bg-pink-100 text-[#E5555C] px-2 py-1 rounded-md text-xs font-bold mt-1">
+                                                    className="flex items-center gap-1 bg-pink-100 text-[#B83E25] px-2 py-1 rounded-md text-xs font-bold mt-1">
                                                     <span>★</span>
                                                     <span>4.8</span>
                                                 </div>
 
                                                 {/* Title - JSON এর name */}
-                                                <h3 className="font-serif text-lg font-medium leading-tight group-hover:text-[#E5555C] transition-colors line-clamp-1">
+                                                <h3 className="font-serif text-lg font-medium leading-tight group-hover:text-[#B83E25] transition-colors line-clamp-1">
                                                     {room.name}
                                                 </h3>
                                             </div>

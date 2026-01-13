@@ -43,7 +43,7 @@ const ContactForm = () => {
         <div className="w-full bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans">
 
             {/* Red Container */}
-            <div className="max-w-7xl mx-auto bg-[#E14453] rounded-lg shadow-lg overflow-hidden py-16 px-6 md:px-20">
+            <div className="max-w-7xl mx-auto bg-[#B83E25] rounded-lg shadow-lg overflow-hidden py-16 px-6 md:px-20">
 
                 {/* Header Content */}
                 <div className="text-center mb-12">

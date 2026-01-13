@@ -147,7 +147,7 @@ export default function BookingSearchBox() {
 
                         <button
                             onClick={handleSearch}
-                            className="w-full md:w-auto bg-[#E5555C] hover:bg-[#d4444b] text-white font-medium py-3 px-8 rounded-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
+                            className="cursor-pointer w-full md:w-auto bg-[#B83E25] hover:bg-[#d4444b] text-white font-medium py-3 px-8 rounded-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
                         >
                             <Search className="w-4 h-4" />
                             <span className="md:hidden lg:inline">Search</span>

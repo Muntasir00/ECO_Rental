@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router'; // or 'react-router-dom'
+import {useState, useEffect, useCallback} from 'react';
+import {Link} from 'react-router'; // or 'react-router-dom'
 import {
     BadgeCheck,
     Bell,
@@ -9,8 +9,8 @@ import {
 } from 'lucide-react';
 
 // UI Components
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
-import { Button } from '~/components/ui/button';
+import {Avatar, AvatarFallback, AvatarImage} from '~/components/ui/avatar';
+import {Button} from '~/components/ui/button';
 import {
     Sheet,
     SheetContent,
@@ -28,17 +28,18 @@ import {
 } from '~/components/ui/dropdown-menu';
 
 // Auth & Routing
-import { signOut } from 'app/auth/context/action';
-import { useRouter } from 'app/routes/hooks';
-import { paths } from 'app/routes/paths';
-import { useAuthContext } from 'app/auth/hooks';
-import { profiles } from "~/pages/public/profile/profileActions";
+import {signOut} from 'app/auth/context/action';
+import {useRouter} from 'app/routes/hooks';
+import {paths} from 'app/routes/paths';
+import {useAuthContext} from 'app/auth/hooks';
+import {profiles} from "~/pages/public/profile/profileActions";
 import type {ProfileApiResponse} from "~/auth/types";
+import Logo from "public/image/logo.png"
 
 
 const Navbar = () => {
     const router = useRouter();
-    const { authenticated, loading: authLoading, user } = useAuthContext();
+    const {authenticated, loading: authLoading, user} = useAuthContext();
 
     // State
     const [profileData, setProfileData] = useState<ProfileApiResponse | null>(null);
@@ -46,10 +47,10 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const navLinks = [
-        { name: 'Home', href: '/' },
-        { name: 'About', href: '/about-us' },
-        { name: 'Blogs', href: '/blogs' },
-        { name: 'Contact us', href: '/contact-us' },
+        {name: 'Home', href: '/'},
+        {name: 'About', href: '/about-us'},
+        {name: 'Blogs', href: '/blogs'},
+        {name: 'Contact us', href: '/contact-us'},
     ];
 
     // 1. Professional Fetch Logic
@@ -74,7 +75,9 @@ const Navbar = () => {
         if (authenticated) {
             fetchProfile();
         }
-        return () => { isMounted = false; };
+        return () => {
+            isMounted = false;
+        };
     }, [authenticated, fetchProfile]);
 
     const handleSignOut = async () => {
@@ -104,28 +107,12 @@ const Navbar = () => {
                     {/* =======================
                         1. LOGO SECTION
                     ======================== */}
-                    <div className='flex-shrink-0 flex items-center gap-2 cursor-pointer' onClick={() => router.push('/')}>
+                    <div className='flex-shrink-0 flex items-center gap-2 cursor-pointer'
+                         onClick={() => router.push('/')}>
                         <div className='w-10 h-10 md:w-12 md:h-12 relative flex items-center justify-center'>
-                            <svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg' className='w-full h-full text-[#E5555C]'>
-                                <circle cx='50' cy='50' r='45' stroke='currentColor' strokeWidth='2' />
-                                <path d='M50 20L75 80H25L50 20Z' fill='currentColor' opacity='0.2' />
-                                <path d='M50 25L70 75H30L50 25Z' stroke='currentColor' strokeWidth='2' />
-                                <path d='M20 60 Q 50 80 80 60' stroke='currentColor' strokeWidth='2' fill='none' />
-                            </svg>
-                        </div>
-                        <div className='flex-col items-start justify-center hidden md:flex'>
-                            <span className='text-[#E5555C] font-serif text-lg md:text-sm lg:text-xl font-bold leading-none tracking-wide'>
-                                LAND OF NOMADS
-                            </span>
-                            <span className='text-[#E5555C] text-[8px] md:text-[10px] font-bold uppercase tracking-[0.3em] mt-1 w-full text-center'>
-                                ECO RENTALS
-                            </span>
+                            <img src={Logo}/>
                         </div>
                     </div>
-
-                    {/* =======================
-                        2. DESKTOP NAV LINKS
-                    ======================== */}
                     <div className='hidden md:flex items-center space-x-8'>
                         {navLinks.map(link => (
                             <Link
@@ -138,17 +125,15 @@ const Navbar = () => {
                         ))}
                     </div>
 
-                    {/* =======================
-                        3. DESKTOP AUTH / PROFILE
-                    ======================== */}
                     <div className='hidden md:flex items-center gap-4'>
                         {authLoading ? (
-                            <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+                            <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"/>
                         ) : authenticated ? (
                             <div className='flex gap-3 items-center'>
                                 <DropdownMenu>
                                     <DropdownMenuTrigger className="cursor-pointer outline-none">
-                                        <Avatar className='h-9 w-9 border border-gray-200 transition-transform hover:scale-105'>
+                                        <Avatar
+                                            className='h-9 w-9 border border-gray-200 transition-transform hover:scale-105'>
                                             <AvatarImage src={displayImage} alt={displayName} className="object-cover"/>
                                             <AvatarFallback className='bg-red-50 text-[#E5555C]'>
                                                 {getInitials(displayName)}
@@ -156,11 +141,13 @@ const Navbar = () => {
                                         </Avatar>
                                     </DropdownMenuTrigger>
 
-                                    <DropdownMenuContent className='w-56 rounded-xl shadow-lg border-gray-100 p-2' align='end' sideOffset={8}>
+                                    <DropdownMenuContent className='w-56 rounded-xl shadow-lg border-gray-100 p-2'
+                                                         align='end' sideOffset={8}>
                                         <DropdownMenuLabel className='p-2 font-normal'>
                                             <div className='flex items-center gap-3'>
                                                 <Avatar className='h-9 w-9'>
-                                                    <AvatarImage src={displayImage} alt={displayName} className="object-cover" />
+                                                    <AvatarImage src={displayImage} alt={displayName}
+                                                                 className="object-cover"/>
                                                     <AvatarFallback>{getInitials(displayName)}</AvatarFallback>
                                                 </Avatar>
                                                 <div className='flex flex-col space-y-0.5 overflow-hidden'>
@@ -174,27 +161,31 @@ const Navbar = () => {
                                             </div>
                                         </DropdownMenuLabel>
 
-                                        <DropdownMenuSeparator className="bg-gray-100 my-1" />
+                                        <DropdownMenuSeparator className="bg-gray-100 my-1"/>
 
                                         <DropdownMenuGroup>
-                                            <DropdownMenuItem onClick={() => router.push('/account')} className="cursor-pointer rounded-lg hover:bg-red-50 hover:text-[#E5555C] focus:bg-red-50 focus:text-[#E5555C]">
-                                                <BadgeCheck className="mr-2 h-4 w-4" />
+                                            <DropdownMenuItem onClick={() => router.push('/account')}
+                                                              className="cursor-pointer rounded-lg hover:bg-red-50 hover:text-[#E5555C] focus:bg-red-50 focus:text-[#E5555C]">
+                                                <BadgeCheck className="mr-2 h-4 w-4"/>
                                                 Account
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem onClick={() => router.push('/profile')} className="cursor-pointer rounded-lg hover:bg-red-50 hover:text-[#E5555C] focus:bg-red-50 focus:text-[#E5555C]">
-                                                <UserIcon className="mr-2 h-4 w-4" />
+                                            <DropdownMenuItem onClick={() => router.push('/profile')}
+                                                              className="cursor-pointer rounded-lg hover:bg-red-50 hover:text-[#E5555C] focus:bg-red-50 focus:text-[#E5555C]">
+                                                <UserIcon className="mr-2 h-4 w-4"/>
                                                 Profile
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem onClick={() => router.push('/user-booking')} className="cursor-pointer rounded-lg hover:bg-red-50 hover:text-[#E5555C] focus:bg-red-50 focus:text-[#E5555C]">
-                                                <Bell className="mr-2 h-4 w-4" />
+                                            <DropdownMenuItem onClick={() => router.push('/user-booking')}
+                                                              className="cursor-pointer rounded-lg hover:bg-red-50 hover:text-[#E5555C] focus:bg-red-50 focus:text-[#E5555C]">
+                                                <Bell className="mr-2 h-4 w-4"/>
                                                 Bookings
                                             </DropdownMenuItem>
                                         </DropdownMenuGroup>
 
-                                        <DropdownMenuSeparator className="bg-gray-100 my-1" />
+                                        <DropdownMenuSeparator className="bg-gray-100 my-1"/>
 
-                                        <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-600 rounded-lg hover:bg-red-50 focus:bg-red-50">
-                                            <LogOut className="mr-2 h-4 w-4" />
+                                        <DropdownMenuItem onClick={handleSignOut}
+                                                          className="cursor-pointer text-red-600 rounded-lg hover:bg-red-50 focus:bg-red-50">
+                                            <LogOut className="mr-2 h-4 w-4"/>
                                             Log out
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
@@ -205,13 +196,13 @@ const Navbar = () => {
                                 <Button
                                     variant='outline'
                                     onClick={() => router.push(paths.auth.jwt.signUp)}
-                                    className='border-[#E5555C] text-[#E5555C] hover:bg-red-50 hover:text-[#E5555C] rounded-full px-6 font-medium transition-all'
+                                    className='border-[#B83E25] text-[#B83E25] hover:bg-red-50 hover:text-[#B83E25] rounded-full px-6 font-medium transition-all'
                                 >
                                     Sign up
                                 </Button>
                                 <Button
                                     onClick={() => router.push(paths.auth.jwt.signIn)}
-                                    className='bg-[#E5555C] hover:bg-[#d4444b] text-white rounded-full px-6 font-medium shadow-md shadow-red-100 transition-all'
+                                    className='bg-[#B83E25] hover:bg-[#d4444b] text-white rounded-full px-6 font-medium shadow-md shadow-red-100 transition-all'
                                 >
                                     Sign in
                                 </Button>
@@ -219,26 +210,20 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    {/* =======================
-                        4. MOBILE MENU (Sheet)
-                    ======================== */}
                     <div className='md:hidden'>
                         <Sheet open={isOpen} onOpenChange={setIsOpen}>
                             <SheetTrigger asChild>
                                 <Button variant='ghost' size='icon' className='text-gray-600 hover:text-[#E5555C]'>
-                                    <Menu className='h-6 w-6' />
+                                    <Menu className='h-6 w-6'/>
                                 </Button>
                             </SheetTrigger>
 
-                            <SheetContent side='right' className='w-[300px] sm:w-[350px] bg-white border-l border-gray-100 flex flex-col h-full'>
-                                {/* Mobile Header */}
+                            <SheetContent side='right'
+                                          className='w-[300px] sm:w-[350px] bg-white border-l border-gray-100 flex flex-col h-full'>
                                 <div className='flex flex-col items-center mt-6 mb-8'>
-                                    <span className='text-[#E5555C] font-serif text-xl font-bold tracking-wide'>
-                                        LAND OF NOMADS
-                                    </span>
-                                    <span className='text-[#E5555C] text-[10px] uppercase tracking-[0.3em]'>
-                                        ECO RENTALS
-                                    </span>
+                                    <div className="w-16 h-16">
+                                        <img src={Logo} className=""/>
+                                    </div>
                                 </div>
 
                                 {/* Mobile Links */}
@@ -247,7 +232,7 @@ const Navbar = () => {
                                         <SheetClose asChild key={link.name}>
                                             <Link
                                                 to={link.href}
-                                                className='text-lg font-medium text-gray-700 hover:text-[#E5555C] transition-colors py-2'
+                                                className='text-lg font-medium text-gray-700 hover:text-[#B83E25] transition-colors py-2'
                                             >
                                                 {link.name}
                                             </Link>
@@ -271,10 +256,16 @@ const Navbar = () => {
                                             </div>
 
                                             <div className="grid grid-cols-2 gap-2 w-full">
-                                                <Button variant="outline" onClick={() => {router.push('/profile'); setIsOpen(false)}} className="w-full text-xs">
+                                                <Button variant="outline" onClick={() => {
+                                                    router.push('/profile');
+                                                    setIsOpen(false)
+                                                }} className="w-full text-xs">
                                                     Profile
                                                 </Button>
-                                                <Button variant="outline" onClick={() => {router.push('/user-booking'); setIsOpen(false)}} className="w-full text-xs">
+                                                <Button variant="outline" onClick={() => {
+                                                    router.push('/user-booking');
+                                                    setIsOpen(false)
+                                                }} className="w-full text-xs">
                                                     Bookings
                                                 </Button>
                                             </div>
@@ -282,7 +273,10 @@ const Navbar = () => {
                                             <Button
                                                 className='w-full bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700'
                                                 variant='ghost'
-                                                onClick={() => { handleSignOut(); setIsOpen(false); }}
+                                                onClick={() => {
+                                                    handleSignOut();
+                                                    setIsOpen(false);
+                                                }}
                                             >
                                                 Logout
                                             </Button>
@@ -293,7 +287,7 @@ const Navbar = () => {
                                                 <Button
                                                     variant='outline'
                                                     onClick={() => router.push(paths.auth.jwt.signUp)}
-                                                    className='w-full border-[#E5555C] text-[#E5555C] hover:bg-red-50 hover:text-[#E5555C] rounded-full h-11'
+                                                    className='w-full border-[#E5555C] text-[#B83E25] hover:bg-red-50 hover:text-[#E5555C] rounded-full h-11'
                                                 >
                                                     Sign up
                                                 </Button>
@@ -302,7 +296,7 @@ const Navbar = () => {
                                             <SheetClose asChild>
                                                 <Button
                                                     onClick={() => router.push(paths.auth.jwt.signIn)}
-                                                    className='w-full bg-[#E5555C] hover:bg-[#d4444b] text-white rounded-full h-11 shadow-md shadow-red-100'
+                                                    className='w-full bg-[#B83E25] hover:bg-[#d4444b] text-white rounded-full h-11 shadow-md shadow-red-100'
                                                 >
                                                     Sign in
                                                 </Button>

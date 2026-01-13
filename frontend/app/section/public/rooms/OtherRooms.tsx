@@ -84,17 +84,17 @@ const OtherRooms = () => {
                                     <div className="flex items-center text-sm text-[#7A7A7A] font-light gap-2">
                                         <span>{room.size} m²</span>
 
-                                        <span className="text-[#E14453] text-[8px]">●</span>
+                                        <span className="text-[#B83E25] text-[8px]">●</span>
 
                                         <span>{room.bedroom} bed</span>
 
-                                        <span className="text-[#E14453] text-[8px]">●</span>
+                                        <span className="text-[#B83E25] text-[8px]">●</span>
 
                                         <span>{room.bathroom} bath</span>
 
                                         {room.balcony && (
                                             <>
-                                                <span className="text-[#E14453] text-[8px]">●</span>
+                                                <span className="text-[#B83E25] text-[8px]">●</span>
                                                 <span>Balcony</span>
                                             </>
                                         )}

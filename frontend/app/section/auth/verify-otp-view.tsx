@@ -105,7 +105,7 @@ export default function VerifyOtp() {
             </CardContent>
 
             <CardFooter>
-               <Button type='submit' disabled={isSubmitting} className='w-full py-3 px-6 bg-[#E14453]'>     {isSubmitting ? 'Submitting…' : 'Log in now'}
+               <Button type='submit' disabled={isSubmitting} className='w-full py-3 px-6 bg-[#B83E25]'>     {isSubmitting ? 'Submitting…' : 'Log in now'}
             </Button>
             </CardFooter>
           </Card>
