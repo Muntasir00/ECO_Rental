@@ -1,7 +1,7 @@
 import cloudinary from '../../config/cloudinary.js';
 import { Booking } from '../../models/booking.model.js';
 import { Room } from '../../models/room.model.js';
-
+import { IRoomImage } from '../../types/room.types.js';
 export const createRoomService = async (
   data: any,
   files: Express.Multer.File[] = []
@@ -97,4 +97,69 @@ export const searchRoomsService = async (query: any) => {
   }
 
   return rooms;
+};
+
+export const updateRoomService = async (
+  roomId: string,
+  data: any,
+  files: Express.Multer.File[] = []
+) => {
+  const room = await Room.findById(roomId);
+  if (!room) {
+    throw new Error('Room not found');
+  }
+
+  if (data.removeImages?.length) {
+    const removeImages: string[] = Array.isArray(data.removeImages)
+      ? data.removeImages
+      : [data.removeImages];
+
+    await Promise.all(
+      removeImages.map(publicId => cloudinary.uploader.destroy(publicId))
+    );
+
+    room.images = room.images.filter(
+      (img: IRoomImage) => !removeImages.includes(img.publicId)
+    );
+  }
+
+  if (files.length) {
+    const uploads = await Promise.all(
+      files.map(file =>
+        cloudinary.uploader.upload(
+          `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
+          { folder: 'rooms' }
+        )
+      )
+    );
+
+    const newImages: IRoomImage[] = uploads.map(upload => ({
+      url: upload.secure_url,
+      publicId: upload.public_id,
+    }));
+
+    room.images.push(...newImages);
+  }
+
+  Object.assign(room, data);
+
+  await room.save();
+  return room;
+};
+
+export const deleteRoomService = async (roomId: string) => {
+  const room = await Room.findById(roomId);
+  if (!room) {
+    throw new Error('Room not found');
+  }
+
+  if (room.images?.length) {
+    await Promise.all(
+      room.images.map((img: IRoomImage) =>
+        cloudinary.uploader.destroy(img.publicId)
+      )
+    );
+  }
+
+  await room.deleteOne();
 };

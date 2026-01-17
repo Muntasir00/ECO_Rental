@@ -28,7 +28,11 @@ export const getBlogByIdService = async (id: string) => {
 
 export const updateBlogByIdService = async (
   id: string,
-  data: Partial<{ title: string; content: string; imageUrl: string }>
+  data: Partial<{
+    title: string;
+    content: string;
+    images: { url: string; publicId: string }[];
+  }>
 ) => {
   return await Blog.findByIdAndUpdate(id, data, { new: true });
 };

@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 import {
   createRoomService,
+  deleteRoomService,
   getAvailableRoomsService,
   getRoomByIdService,
   searchRoomsService,
+  updateRoomService,
 } from '../services/Room/room.service.js';
 import { connectDB } from '../config/db.js';
 
@@ -42,4 +44,43 @@ export const searchRooms = async (req: Request, res: Response) => {
   await connectDB();
   const rooms = await searchRoomsService(req.query);
   res.json(rooms);
+};
+
+export const updateRoom = async (req: Request, res: Response) => {
+  await connectDB();
+
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: 'Room ID is required' });
+  }
+
+  const room = await updateRoomService(
+    id,
+    req.body,
+    req.files as Express.Multer.File[]
+  );
+
+  res.json({
+    success: true,
+    message: 'Room updated successfully',
+    room,
+  });
+};
+
+export const deleteRoom = async (req: Request, res: Response) => {
+  await connectDB();
+
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: 'Room ID is required' });
+  }
+
+  await deleteRoomService(id);
+
+  res.json({
+    success: true,
+    message: 'Room deleted successfully',
+  });
 };

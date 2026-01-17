@@ -11,23 +11,34 @@ import { connectDB } from '../config/db.js';
 
 export const createBlog = async (req: Request, res: Response) => {
   await connectDB();
-  const { title, content } = req.body;
 
-  if (!title || !content || !req.file) {
+  const { title, content } = req.body;
+  const files = req.files as Express.Multer.File[];
+
+  if (!title || !content || !files || files.length === 0) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
-  const uploadResult = await cloudinary.uploader.upload(
-    `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
-    { folder: 'blogs' }
+  const uploadResults = await Promise.all(
+    files.map(file =>
+      cloudinary.uploader.upload(
+        `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
+        { folder: 'blogs' }
+      )
+    )
   );
+
+  const images = uploadResults.map(result => ({
+    url: result.secure_url,
+    publicId: result.public_id,
+  }));
 
   const blog = await createBlogService({
     title,
     content,
-    imageUrl: uploadResult.secure_url,
-    imagePublicId: uploadResult.public_id,
+    images,
   });
+
   res.status(201).json({
     success: true,
     message: 'Blog created successfully',
@@ -73,29 +84,49 @@ export const updateBlogById = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Blog ID is required.' });
   }
 
+  const { title, content, removeImageIds } = req.body;
+  const files = req.files as Express.Multer.File[];
+
   const blog = await getBlogByIdService(id);
-  if (!blog) return res.status(404).json({ message: 'Blog not found' });
-
-  let updatedData: any = {
-    title: req.body.title,
-    content: req.body.content,
-  };
-
-  if (req.file) {
-    if (blog.imagePublicId) {
-      await cloudinary.uploader.destroy(blog.imagePublicId.toString());
-    }
-
-    const uploadResult = await cloudinary.uploader.upload(
-      `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
-      { folder: 'blogs' }
-    );
-
-    updatedData.imageUrl = uploadResult.secure_url;
-    updatedData.imagePublicId = uploadResult.public_id;
+  if (!blog) {
+    return res.status(404).json({ message: 'Blog not found' });
   }
 
-  const updatedBlog = await updateBlogByIdService(id, updatedData);
+  let images = [...blog.images];
+
+  if (removeImageIds && Array.isArray(removeImageIds)) {
+    await Promise.all(
+      removeImageIds.map((publicId: string) =>
+        cloudinary.uploader.destroy(publicId)
+      )
+    );
+
+    images = images.filter(img => !removeImageIds.includes(img.publicId));
+  }
+
+  if (files && files.length > 0) {
+    const uploadResults = await Promise.all(
+      files.map(file =>
+        cloudinary.uploader.upload(
+          `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
+          { folder: 'blogs' }
+        )
+      )
+    );
+
+    const newImages = uploadResults.map(img => ({
+      url: img.secure_url,
+      publicId: img.public_id,
+    }));
+
+    images.push(...newImages);
+  }
+
+  const updatedBlog = await updateBlogByIdService(id, {
+    title,
+    content,
+    images,
+  });
 
   res.status(200).json({
     success: true,
@@ -107,17 +138,24 @@ export const updateBlogById = async (req: Request, res: Response) => {
 export const deleteBlogById = async (req: Request, res: Response) => {
   await connectDB();
   const { id } = req.params;
+
   if (!id) {
     return res.status(400).json({ message: 'Blog ID is required.' });
   }
-  const deletedBlog = await deleteBlogByIdService(id);
 
-  if (!deletedBlog) {
+  const blog = await getBlogByIdService(id);
+  if (!blog) {
     return res.status(404).json({ message: 'Blog not found.' });
   }
 
+  await Promise.all(
+    blog.images.map(img => cloudinary.uploader.destroy(img.publicId))
+  );
+
+  await deleteBlogByIdService(id);
+
   res.status(200).json({
     success: true,
-    message: 'Blog deleted successfully',
+    message: 'Blog and images deleted successfully',
   });
 };

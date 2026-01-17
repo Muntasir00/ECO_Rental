@@ -18,7 +18,7 @@ const StatsSection = () => {
             </h2>
 
             {/* Divider Line */}
-            <div className='w-full h-[1px] bg-white/40 mb-6'></div>
+            <div className='w-full h-px bg-white/40 mb-6'></div>
 
             {/* Rating */}
             <div className='flex items-center justify-center lg:justify-start gap-4'>

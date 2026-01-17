@@ -4,6 +4,8 @@ import {
   getRooms,
   getRoomById,
   searchRooms,
+  updateRoom,
+  deleteRoom,
 } from '../controllers/room.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 import { authorizeRoles } from '../middleware/role.middleware.js';
@@ -23,5 +25,13 @@ router.post(
   upload.array('images', 10),
   createRoom
 );
+router.put(
+  '/:id',
+  protect,
+  authorizeRoles('admin'),
+  upload.array('images', 5),
+  updateRoom
+);
+router.delete('/:id', protect, authorizeRoles('admin'), deleteRoom);
 
 export default router;

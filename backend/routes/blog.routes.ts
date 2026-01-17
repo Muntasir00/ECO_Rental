@@ -22,14 +22,14 @@ router.post(
   '/create',
   protect,
   authorizeRoles('admin'),
-  upload.single('image'),
+  upload.array('images', 5),
   createBlog
 );
 router.put(
   '/:id',
   protect,
   authorizeRoles('admin'),
-  upload.single('image'),
+  upload.array('images', 5),
   updateBlogById
 );
 router.delete('/:id', protect, authorizeRoles('admin'), deleteBlogById);
