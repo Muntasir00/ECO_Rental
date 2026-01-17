@@ -116,14 +116,38 @@ export const cancelBookingService = async (
   return booking;
 };
 
-export const getAllBookingService = async (page = 1, limit = 10) => {
+export const getAllBookingService = async (
+  page = 1,
+  limit = 10,
+  search?: string,
+  status?: string
+) => {
   const skip = (page - 1) * limit;
 
+  const query: any = {};
+
+  // Status filter
+  if (status) {
+    query.status = status;
+  }
+
+  // Search filter
+  if (search) {
+    const regex = new RegExp(search, 'i'); // case-insensitive
+
+    query.$or = [
+      { name: regex },
+      { email: regex },
+      { phoneNumber: regex },
+      { _id: mongoose.Types.ObjectId.isValid(search) ? search : undefined },
+    ].filter(Boolean);
+  }
+
   const [bookings, total] = await Promise.all([
-    Booking.find()
+    Booking.find(query)
       .populate({
         path: 'user',
-        select: '-password -otp -otpExpiry',
+        select: 'username email role',
       })
       .populate({
         path: 'room',
@@ -133,7 +157,7 @@ export const getAllBookingService = async (page = 1, limit = 10) => {
       .limit(limit)
       .sort({ createdAt: -1 }),
 
-    Booking.countDocuments(),
+    Booking.countDocuments(query),
   ]);
 
   return {

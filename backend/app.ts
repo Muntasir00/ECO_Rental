@@ -24,6 +24,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'https://eco-rental-bqf5.vercel.app',
+  'https://admin-eco-rental.vercel.app/',
 ];
 
 app.use(
