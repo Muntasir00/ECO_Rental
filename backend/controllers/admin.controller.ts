@@ -29,7 +29,7 @@ export const createAdmin = async (req: Request, res: Response) => {
   });
 
   return res.status(201).json({
-    successs: true,
+    success: true,
     message: 'Admin user created successfully',
     adminUser,
   });

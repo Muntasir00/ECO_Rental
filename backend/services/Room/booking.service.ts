@@ -115,3 +115,34 @@ export const cancelBookingService = async (
 
   return booking;
 };
+
+export const getAllBookingService = async (page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
+
+  const [bookings, total] = await Promise.all([
+    Booking.find()
+      .populate({
+        path: 'user',
+        select: '-password -otp -otpExpiry',
+      })
+      .populate({
+        path: 'room',
+        select: 'name location pricePerNight',
+      })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 }),
+
+    Booking.countDocuments(),
+  ]);
+
+  return {
+    bookings,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};

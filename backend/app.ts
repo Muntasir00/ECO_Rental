@@ -9,6 +9,7 @@ import roomRoutes from './routes/room.routes.js';
 import bookingRoutes from './routes/booking.routes.js';
 import availabilityRoutes from './routes/availability.routes.js';
 import facilityRoutes from './routes/facility.routes.js';
+import userManagementRoutes from './routes/usermanagement.routes.js';
 
 import { bookingCronJob } from './cron/booking.cron.js';
 
@@ -52,6 +53,7 @@ app.use('/rooms', roomRoutes);
 app.use('/bookings', bookingRoutes);
 app.use('/availability', availabilityRoutes);
 app.use('/facilities', facilityRoutes);
+app.use('/usermanagement', userManagementRoutes);
 
 /* ---------- Global Error Handler ---------- */
 app.use(

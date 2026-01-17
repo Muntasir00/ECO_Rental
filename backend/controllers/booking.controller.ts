@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import {
   cancelBookingService,
   createBookingService,
+  getAllBookingService,
   getUserBookingsService,
 } from '../services/Room/booking.service.js';
 import { connectDB } from '../config/db.js';
@@ -61,4 +62,13 @@ export const cancelBooking = async (req: Request, res: Response) => {
   }
   const booking = await cancelBookingService(req.params.bookingId, req.userId);
   res.json(booking);
+};
+
+export const getBookings = async (req: Request, res: Response) => {
+  await connectDB();
+  const page = Number(req.query.page || 1);
+  const limit = Number(req.query.limit || 10);
+
+  const data = await getAllBookingService(page, limit);
+  res.json(data);
 };
