@@ -1,22 +1,33 @@
 import { Facility } from '../../models/facility.model.js';
 import { Room } from '../../models/room.model.js';
 import { IFacility } from '../../models/facility.model.js';
+import mongoose from 'mongoose';
 
 /**
  * CREATE
  */
 export const createFacilityService = async (data: IFacility) => {
-  const roomExists = await Room.findById(data.room);
-  if (!roomExists) {
-    throw new Error('Room does not exist');
-  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  const existingFacility = await Facility.findOne({ room: data.room });
-  if (existingFacility) {
-    throw new Error('Facility already exists for this room');
-  }
+  try {
+    const room = await Room.findById(data.room).session(session);
+    if (!room) throw new Error('Room does not exist');
 
-  return Facility.create(data);
+    const facility = await Facility.create([data], { session });
+
+    room.hasFacility = true;
+    await room.save({ session });
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return facility[0];
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
 };
 
 /**
@@ -71,11 +82,30 @@ export const updateFacilityService = async (
 /**
  * DELETE
  */
-export const deleteFacilityService = async (facilityId: string) => {
-  const facility = await Facility.findById(facilityId);
-  if (!facility) {
-    throw new Error('Facility not found');
-  }
 
-  await facility.deleteOne();
+export const deleteFacilityService = async (facilityId: string) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const facility = await Facility.findById(facilityId).session(session);
+    if (!facility) {
+      throw new Error('Facility not found');
+    }
+
+    await Room.findByIdAndUpdate(
+      facility.room,
+      { hasFacility: false },
+      { session }
+    );
+
+    await facility.deleteOne({ session });
+
+    await session.commitTransaction();
+    session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
 };

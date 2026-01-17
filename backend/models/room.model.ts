@@ -11,6 +11,7 @@ export interface IRoom extends Document {
   pricePerNight: number;
   guest: number;
   available: boolean;
+  hasFacility: boolean;
   images: {
     url: string;
     publicId: string;
@@ -30,6 +31,10 @@ const roomSchema = new Schema<IRoom>(
     availableRooms: { type: Number, required: true },
     pricePerNight: { type: Number, required: true },
     available: { type: Boolean, default: true },
+    hasFacility: {
+      type: Boolean,
+      default: false,
+    },
     guest: { type: Number, required: true },
     images: [
       {
