@@ -177,6 +177,18 @@ export const loginUser = async (req: Request, res: Response) => {
       });
     }
 
+    if (!decodedRefresh?.jti) {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to decode refresh token jti',
+      });
+    }
+
+    await RefreshToken.create({
+      user: user._id,
+      jti: decodedRefresh.jti,
+    });
+
     user.isLoggedIn = true;
     await user.save();
     const safeUser = {
@@ -411,7 +423,12 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     storedToken.isRevoked = true;
     await storedToken.save();
 
-    const newAccessToken = generateAccessToken(payload.id, payload.role);
+    const user = await User.findById(payload.id);
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    const newAccessToken = generateAccessToken(user._id.toString(), user.role);
     const newRefreshToken = generateRefreshToken(payload.id);
 
     const decoded = jwt.decode(newRefreshToken) as jwt.JwtPayload | null;
