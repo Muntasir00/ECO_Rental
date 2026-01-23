@@ -50,6 +50,25 @@ export const getDashboardOverviewService = async () => {
 
   const roomsAvailable = roomsAgg[0]?.total || 0;
 
+  //   ------------------------
+  // BOOKINGS BY MONTH (CHART)
+  // ------------------------
+
+  const bookingsByMonthAgg = await Booking.aggregate([
+    {
+      $group: {
+        _id: {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+        },
+        totalBookings: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { '_id.year': 1, '_id.month': 1 },
+    },
+  ]);
+
   // ------------------------
   // REVENUE BY MONTH (CHART)
   // ------------------------
@@ -87,6 +106,13 @@ export const getDashboardOverviewService = async () => {
       i => `${monthNames[i._id.month - 1]} ${i._id.year}`,
     ),
     data: revenueByMonth.map(i => i.revenue),
+  };
+
+  const bookingsByMonthChart = {
+    labels: bookingsByMonthAgg.map(
+      i => `${monthNames[i._id.month - 1]} ${i._id.year}`,
+    ),
+    data: bookingsByMonthAgg.map(i => i.totalBookings),
   };
 
   // ------------------------
@@ -128,6 +154,7 @@ export const getDashboardOverviewService = async () => {
     ],
     charts: {
       revenueByMonth: revenueChart,
+      bookingsByMonth: bookingsByMonthChart,
     },
   };
 };
