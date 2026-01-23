@@ -144,7 +144,7 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) {
-      return res.status(402).json({
+      return res.status(401).json({
         success: false,
         message: 'Incorrect Password',
       });
@@ -167,28 +167,34 @@ export const loginUser = async (req: Request, res: Response) => {
     const accessToken = generateAccessToken(user._id.toString(), user.role);
     const refreshToken = generateRefreshToken(user._id.toString());
 
-    const decoded = jwt.decode(refreshToken) as jwt.JwtPayload;
+    const decodedAccess = jwt.decode(accessToken) as jwt.JwtPayload | null;
+    const decodedRefresh = jwt.decode(refreshToken) as jwt.JwtPayload | null;
 
-    if (!decoded || !decoded.jti) {
-      return res
-        .status(500)
-        .json({ message: 'Failed to decode refresh token' });
+    if (!decodedAccess?.exp || !decodedRefresh?.exp) {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to decode token expiration',
+      });
     }
-
-    await RefreshToken.create({
-      user: user._id,
-      jti: decoded.jti,
-    });
 
     user.isLoggedIn = true;
     await user.save();
+    const safeUser = {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      isVerified: user.isVerified,
+    };
 
     return res.status(200).json({
       success: true,
       message: `Welcome back ${user.username}`,
       accessToken,
       refreshToken,
-      user,
+      accessTokenExp: decodedAccess.exp,
+      refreshTokenExp: decodedRefresh.exp,
+      user: safeUser,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -382,7 +388,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
   try {
     const payload = jwt.verify(
       refreshToken,
-      process.env.JWT_REFRESH_SECRET!
+      process.env.JWT_REFRESH_SECRET!,
     ) as any;
 
     if (payload.type !== 'refresh') {
