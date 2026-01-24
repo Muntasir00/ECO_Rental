@@ -1,7 +1,6 @@
 import axios, { endpoints } from 'app/utils/axios';
 
 import { setSession } from './utils';
-import { STORAGE_KEY } from './constant';
 
 // ----------------------------------------------------------------------
 

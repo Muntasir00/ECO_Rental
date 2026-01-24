@@ -5,10 +5,16 @@ import {Link} from "react-router";
 import {DateDisplay} from "~/utils/DateDisplay";
 import {Skeleton} from "~/components/ui/skeleton";
 
+interface images {
+    "url": string,
+    "publicId": string,
+    "_id": string
+}
+
 interface BlogPost {
     _id: string;
     title: string;
-    imageUrl: string;
+    images: images[];
     createdAt: string;
 }
 
@@ -78,7 +84,7 @@ const BlogSection = () => {
                                 {/* Image Container */}
                                 <div className="overflow-hidden w-full h-56 md:h-64 mb-5 bg-gray-100 rounded-sm">
                                     <img
-                                        src={post.imageUrl}
+                                        src={post.images[0].url}
                                         alt={post.title}
                                         className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
                                     />
@@ -87,7 +93,11 @@ const BlogSection = () => {
                                 {/* Text Content */}
                                 <div className="flex flex-col flex-grow">
                                     <h3 className="text-xl font-serif text-[#1A1A1A] leading-snug mb-3 group-hover:text-gray-600 transition-colors line-clamp-2">
-                                        {post.title}
+                                        {
+                                            post.title.length > 25
+                                                ? `${post.title.substring(0, 25)}...`
+                                                : post.title
+                                        }
                                     </h3>
                                     <DateDisplay
                                         value={post.createdAt}

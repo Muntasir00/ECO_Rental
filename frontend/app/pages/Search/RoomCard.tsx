@@ -61,7 +61,9 @@ const RoomCard: React.FC<RoomCardProps> = ({data}) => {
                         ★ {rating.toFixed(1)}
                     </span>
                         <h3 className="font-serif text-lg font-semibold text-gray-900 truncate">
-                            {data.name}
+                            {data.name.length > 25
+                                ? `${data.name.substring(0, 25)}...`
+                                : data.name}
                         </h3>
                     </div>
 

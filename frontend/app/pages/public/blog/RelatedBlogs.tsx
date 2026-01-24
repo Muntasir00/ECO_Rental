@@ -3,10 +3,15 @@ import {blogs} from "~/pages/public/blog/blogActions";
 import {DateDisplay} from "~/utils/DateDisplay";
 import {Skeleton} from "~/components/ui/skeleton";
 
+interface images {
+    "url": string,
+    "publicId": string,
+    "_id": string
+}
 interface BlogPost {
     _id: string;
     title: string;
-    imageUrl: string;
+    images: images[];
     createdAt: string;
 }
 
@@ -67,7 +72,7 @@ const RelatedBlogs = () => {
                                 {/* Image Container */}
                                 <div className="overflow-hidden w-full h-64 mb-5 bg-gray-200">
                                     <img
-                                        src={post.imageUrl}
+                                        src={post.images[0].url}
                                         alt={post.title}
                                         className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
                                     />
