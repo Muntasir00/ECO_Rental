@@ -8,14 +8,17 @@ import { changePassword, forgotPassword } from '~/auth/context';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: CONFIG.site.serverUrl });
+const axiosInstance = axios.create({
+  baseURL: CONFIG.site.serverUrl,
+  withCredentials: true,
+});
 
 axiosInstance.interceptors.response.use(
   response => response,
   error =>
     Promise.reject(
-      (error.response && error.response.data) || 'Something went wrong!'
-    )
+      (error.response && error.response.data) || 'Something went wrong!',
+    ),
 );
 
 export default axiosInstance;
@@ -60,18 +63,18 @@ export const endpoints = {
     changePassword: '/user/change-password/:email',
     logout: '/user/logout',
   },
-  blogs:{
+  blogs: {
     allBlogs: '/blogs',
     blog: '/blogs',
   },
-  user:{
+  user: {
     profile: '/profiles/me',
     profileUpdate: '/profiles/update',
   },
-  rooms:{
+  rooms: {
     allRooms: '/rooms',
     singleRoom: '/rooms',
-    availability:'/availability/rooms',
+    availability: '/availability/rooms',
     bookings: '/bookings',
-  }
+  },
 };

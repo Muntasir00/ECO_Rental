@@ -18,29 +18,35 @@ const app = express();
 /* ---------- Body Parsers ---------- */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-/* ---------- CORS ---------- */
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'https://eco-rental-bqf5.vercel.app',
   'https://admin-eco-rental.vercel.app',
+  'https://eco-rental-bqf5.vercel.app/',
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      console.log('CORS request from:', origin);
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  }),
-);
+const corsOptions = {
+  origin: (origin: string | undefined, callback: any) => {
+    console.log('CORS origin:', origin);
+    if (!origin) return callback(null, true);
+    const cleanOrigin = origin.replace(/\/$/, '');
+    if (allowedOrigins.includes(cleanOrigin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error(`CORS blocked: ${origin}`));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
+// Apply CORS middleware
+app.use(cors(corsOptions));
+
+// ✅ Optional preflight handler (regex instead of '*')
+app.options(/.*/, cors(corsOptions));
 /* ---------- Cron Job ---------- */
 // if (process.env.ENABLE_CRON === 'true') {
 bookingCronJob();
