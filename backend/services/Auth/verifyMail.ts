@@ -8,6 +8,12 @@ import handlebars from 'handlebars';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const fallbackClientUrl = 'https://eco-rental-bqf5.vercel.app';
+const clientUrl =
+  process.env.CLIENT_URL && process.env.CLIENT_URL.trim().length > 0
+    ? process.env.CLIENT_URL.replace(/\/$/, '')
+    : fallbackClientUrl;
+
 export const verifyMail = async (token: string, email: string) => {
   const emailTemplateSource = fs.readFileSync(
     path.join(__dirname, 'template.hbs'),
@@ -17,7 +23,7 @@ export const verifyMail = async (token: string, email: string) => {
   const template = handlebars.compile(emailTemplateSource);
   const htmlToSend = template({
     token: encodeURIComponent(token),
-    client_url: process.env.CLIENT_URL,
+    client_url: clientUrl,
   });
 
   const transporter = nodemailer.createTransport({
