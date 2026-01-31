@@ -11,11 +11,14 @@ const __dirname = path.dirname(__filename);
 export const verifyMail = async (token: string, email: string) => {
   const emailTemplateSource = fs.readFileSync(
     path.join(__dirname, 'template.hbs'),
-    'utf-8'
+    'utf-8',
   );
 
   const template = handlebars.compile(emailTemplateSource);
-  const htmlToSend = template({ token: encodeURIComponent(token) });
+  const htmlToSend = template({
+    token: encodeURIComponent(token),
+    client_url: process.env.CLIENT_URL,
+  });
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',

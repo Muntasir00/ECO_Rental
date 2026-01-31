@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { room as fetchRoomApi } from '~/pages/public/rooms/roomActions';
 import FacilitiesSection from '~/section/public/rooms/FacilitiesSection';
 import OtherRooms from '~/section/public/rooms/OtherRooms';
@@ -74,7 +74,7 @@ const RoomDetails = () => {
     return (
       <div className='font-sans bg-white'>
         {/* Hero Skeleton */}
-        <Skeleton className='w-full h-[60vh] min-h-[400px]' />
+        <Skeleton className='w-full h-[60vh] min-h-100' />
 
         <div className='bg-[#FAFAFA] w-full'>
           <div className='max-w-7xl mx-auto px-4 sm:px-6 py-12'>
@@ -99,8 +99,8 @@ const RoomDetails = () => {
               </div>
 
               {/* Booking Form Skeleton */}
-              <div className='w-full lg:w-[400px] flex-shrink-0'>
-                <Skeleton className='h-[400px] w-full bg-white rounded-sm' />
+              <div className='w-full lg:w-100 shrink-0'>
+                <Skeleton className='h-100 w-full bg-white rounded-sm' />
               </div>
             </div>
           </div>
@@ -128,7 +128,7 @@ const RoomDetails = () => {
   return (
     <div className='font-sans text-[#1A1A1A] bg-white'>
       {/* Header / Hero Section */}
-      <header className='relative w-full h-[60vh] min-h-[400px]'>
+      <header className='relative w-full h-[60vh] min-h-100'>
         <div className='absolute inset-0 w-full h-full bg-gray-900'>
           <img
             src={getMainImage()}
@@ -203,13 +203,16 @@ const RoomDetails = () => {
                 </p>
               </div>
 
+              <Link to="/contact-us">
               <button className='border border-[#B83E25] text-[#B83E25] px-8 py-3 rounded-sm hover:bg-[#B83E25] hover:text-white transition-colors duration-300 font-medium text-sm'>
                 Communicate with us
               </button>
+              </Link>
+              
             </div>
 
             {/* Booking Sidebar */}
-            <div className='w-full lg:w-[400px] flex-shrink-0'>
+            <div className='w-full lg:w-100 shrink-0'>
               <div className='bg-white p-3 lg:p-4 shadow-sm'>
                 {/* Header: Price */}
                 <div className='flex justify-between items-baseline mb-8'>

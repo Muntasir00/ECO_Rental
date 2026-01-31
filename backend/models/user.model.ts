@@ -1,10 +1,13 @@
 import mongoose, { Document } from 'mongoose';
 export type UserRole = 'admin' | 'user';
+export type AuthProvider = 'local' | 'google' | 'apple';
 export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
   role: UserRole;
+  provider: AuthProvider;
+  providerId?: string;
   isVerified: boolean;
   isLoggedIn: boolean;
   token: string | null;
@@ -25,6 +28,16 @@ const userSchema = new mongoose.Schema<IUser>(
       default: 'user',
     },
 
+    provider: {
+      type: String,
+      enum: ['local', 'google', 'apple'],
+      default: 'local',
+    },
+    providerId: {
+      type: String,
+      default: null,
+    },
+
     isVerified: { type: Boolean, default: false },
     isLoggedIn: { type: Boolean, default: false },
     token: { type: String, default: null },
@@ -32,7 +45,7 @@ const userSchema = new mongoose.Schema<IUser>(
     otp: { type: String, default: null },
     otpExpiry: { type: Date, default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const User = mongoose.model<IUser>('User', userSchema);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 export default function CertifiedBrandSection() {
   return (
@@ -14,9 +15,12 @@ export default function CertifiedBrandSection() {
               An internationally certified brand for finding your stay!
             </h2>
 
+            <Link to='/rooms'>
+
             <button className='bg-[#B83E25] hover:bg-[#d4444b] text-white px-10 py-3.5 rounded-sm font-medium transition-colors shadow-sm'>
               Find Place
             </button>
+            </Link>
           </div>
 
           {/* =======================
@@ -104,7 +108,7 @@ const AwardBadge = ({ title, subtitle, stars }: any) => {
         {/* Text Content inside the badge */}
         <div className='relative z-10 flex flex-col items-center pt-2'>
           {/* Stars */}
-          <div className='flex gap-[1px] mb-1'>
+          <div className='flex gap-px mb-1'>
             {[...Array(stars)].map((_, i) => (
               <span key={i} className='text-[6px] text-gray-400'>
                 ★

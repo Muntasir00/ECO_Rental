@@ -40,9 +40,9 @@ const FacilitiesList = () => {
             Enjoy complete and best <br /> quality facilities
           </h2>
 
-          <button className='bg-[#B83E25] hover:bg-[#d4444b] text-white px-8 py-3 rounded-sm font-medium transition-colors shadow-md shadow-red-100'>
+          {/* <button className='bg-[#B83E25] hover:bg-[#d4444b] text-white px-8 py-3 rounded-sm font-medium transition-colors shadow-md shadow-red-100'>
             See more
-          </button>
+          </button> */}
         </div>
 
         {/* =======================
@@ -95,14 +95,15 @@ const FacilitiesList = () => {
                   </div>
 
                   {/* Arrow Icon */}
-                  <div className='mt-8 md:mt-12'>
+                  {/* <div className='mt-8 md:mt-12'>
                     <div className='inline-flex items-center justify-center w-12 h-12 rounded-full cursor-pointer transition-transform duration-300 group-hover:translate-x-2'>
                       <ArrowRight
                         className='w-8 h-8 text-[#B83E25]'
                         strokeWidth={1.5}
                       />
                     </div>
-                  </div>
+                  </div> */}
+                  
                 </div>
               </div>
             </div>
