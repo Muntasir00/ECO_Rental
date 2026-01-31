@@ -30,6 +30,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
+      console.log('CORS request from:', origin);
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -37,7 +38,7 @@ app.use(
       }
     },
     credentials: true,
-  })
+  }),
 );
 
 /* ---------- Cron Job ---------- */
@@ -62,7 +63,7 @@ app.use(
     err: any,
     req: express.Request,
     res: express.Response,
-    next: express.NextFunction
+    next: express.NextFunction,
   ) => {
     console.error(err);
 
@@ -73,7 +74,7 @@ app.use(
     res.status(err.status || 500).json({
       message: err.message || 'Server: Something went wrong!',
     });
-  }
+  },
 );
 
 export default app;
