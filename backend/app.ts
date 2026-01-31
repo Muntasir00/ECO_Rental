@@ -24,6 +24,7 @@ const allowedOrigins = [
   'https://eco-rental-bqf5.vercel.app',
   'https://admin-eco-rental.vercel.app',
   'https://eco-rental-bqf5.vercel.app/',
+  'https://admin-eco-rental.vercel.app/',
 ];
 
 const corsOptions = {

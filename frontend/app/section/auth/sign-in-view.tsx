@@ -241,7 +241,7 @@ export function SignInView() {
                       />
 
                       <Link
-                        to='#'
+                        to='/auth/forgot-password'
                         className='text-xs text-gray-300 hover:text-white hover:underline transition-colors'
                       >
                         Forgot Your Password?

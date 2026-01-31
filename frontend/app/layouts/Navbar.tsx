@@ -191,6 +191,16 @@ const Navbar = () => {
                         <UserIcon className='mr-2 h-4 w-4' />
                         Profile
                       </DropdownMenuItem>
+
+                      <DropdownMenuItem
+                        onClick={() => router.push('/auth/change-password')}
+                        className='cursor-pointer rounded-lg hover:bg-red-50 hover:text-[#B83E25] focus:bg-red-50 focus:text-[#B83E25]'
+                      >
+                        <UserIcon className='mr-2 h-4 w-4' />
+                        Change Password
+                      </DropdownMenuItem>
+
+
                       <DropdownMenuItem
                         onClick={() => router.push('/user-booking')}
                         className='cursor-pointer rounded-lg hover:bg-red-50 hover:text-[#B83E25] focus:bg-red-50 focus:text-[#B83E25]'
@@ -301,6 +311,16 @@ const Navbar = () => {
                           className='w-full text-xs'
                         >
                           Profile
+                        </Button>
+                        <Button
+                          variant='outline'
+                          onClick={() => {
+                            router.push('/auth/change-password');
+                            setIsOpen(false);
+                          }}
+                          className='w-full text-xs'
+                        >
+                          Change Password
                         </Button>
                         <Button
                           variant='outline'
