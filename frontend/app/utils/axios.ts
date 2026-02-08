@@ -51,6 +51,20 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
   }
 };
 
+export type GoogleLoginResponse = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+  user: { id: string; email: string; username: string; role: string };
+};
+
+export async function googleLoginApi(idToken: string) {
+  const res = await axiosInstance.post<GoogleLoginResponse>('/auth/google', {
+    idToken,
+  });
+  return res.data;
+}
+
 // ----------------------------------------------------------------------
 
 export const endpoints = {

@@ -22,6 +22,7 @@ import { Input } from '~/components/ui/input';
 import { Checkbox } from '~/components/ui/checkbox';
 import { cn } from '~/lib/utils';
 import { Link } from 'react-router';
+import { googleLoginApi } from '~/utils/axios';
 
 export type SignInSchemaType = z.infer<typeof SignInSchema>;
 
@@ -36,13 +37,59 @@ export const SignInSchema = z.object({
     .min(6, { message: 'Password must be at least 6 characters!' }),
 });
 
+
+
 export function SignInView() {
+
+
   const router = useRouter();
 
   const { initSession } = useAuthContext();
 
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
+
+    async function handleGoogleSignIn() {
+  try {
+    setErrorMsg("");
+
+    if (!window.google?.accounts?.id) {
+      setErrorMsg("Google SDK not loaded. Check gsi script include.");
+      return;
+    }
+
+    window.google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID, // or process.env...
+      callback: async (response: any) => {
+        try {
+          const idToken = response.credential; // THIS is the Google ID token
+          const dataRes = await googleLoginApi(idToken);
+
+          // same as your normal login:
+          initSession?.(dataRes.user, dataRes.accessToken);
+
+          // store refresh token if you keep it in localStorage (optional)
+          // localStorage.setItem("refreshToken", dataRes.refreshToken);
+
+          router.push(paths.home.root);
+        } catch (err: any) {
+          const errMsg =
+            err?.response?.data?.message ||
+            err?.message ||
+            "Google login failed!";
+          setErrorMsg(errMsg);
+        }
+      },
+      // optional:
+      // ux_mode: "popup",
+    });
+
+    // opens Google popup
+    window.google.accounts.id.prompt();
+  } catch (error: any) {
+    setErrorMsg(error?.message || "Google sign-in error");
+  }
+}
 
   const defaultValues: SignInSchemaType = {
     email: '',
@@ -81,7 +128,7 @@ export function SignInView() {
   return (
     <>
       <div className='min-h-screen bg-gray-50 flex items-center justify-center sm:p-4 font-sans'>
-        <div className='relative w-full max-w-6xl h-[900px] md:h-[850px] bg-black sm:rounded-[10px] overflow-hidden shadow-2xl'>
+        <div className='relative w-full max-w-6xl h-225 md:h-212.5 bg-black sm:rounded-[10px] overflow-hidden shadow-2xl'>
           {/* Background Image Layer */}
           <div className='absolute inset-0 z-0'>
             <img
@@ -96,9 +143,9 @@ export function SignInView() {
           {/* Content Wrapper */}
           <div className='absolute inset-0 z-10 flex items-center justify-center p-3 sm:p-6 overflow-y-auto'>
             {/* Glass Card */}
-            <div className='w-full max-w-[450px] bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-3 sm:p-10 shadow-2xl relative overflow-hidden'>
+            <div className='w-full max-w-112.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-3 sm:p-10 shadow-2xl relative overflow-hidden'>
               {/* Glossy Effect */}
-              <div className='absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/5 to-transparent pointer-events-none'></div>
+              <div className='absolute top-0 left-0 w-full h-1/2 bg-linear-to-b from-white/5 to-transparent pointer-events-none'></div>
 
               <div className='relative z-10 flex flex-col items-center'>
                 {/* 1. Logo Section */}
@@ -274,6 +321,7 @@ export function SignInView() {
                     {/* Google Button */}
                     <button
                       type='button'
+                      onClick={handleGoogleSignIn}
                       className='flex items-center justify-center gap-2 bg-[#FFD1D1] hover:bg-[#ffc2c2] text-[#5e4e4e] py-2.5 rounded-lg transition-colors font-medium text-sm'
                     >
                       <svg className='w-4 h-4' viewBox='0 0 24 24'>

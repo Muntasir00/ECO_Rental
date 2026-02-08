@@ -32,6 +32,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
+                <script
+          src="https://accounts.google.com/gsi/client"
+          async
+          defer
+        />
+
       </head>
       <body>
         {children}
