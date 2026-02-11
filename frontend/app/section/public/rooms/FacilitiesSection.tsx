@@ -68,7 +68,14 @@ const FacilitiesSection = ({facility}: { facility: FacilityProps }) => {
 
             {/* White Content Box */}
             <div className='bg-white py-10 px-6 rounded-sm shadow-sm'>
-                <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8'>
+                {/*<div className='grid sm:grid-cols-2 md:grid-cols-3 gap-8'>*/}
+                <div
+                    className={`grid gap-8 justify-center
+  ${facility.facilityList.length <= 3
+                        ? "grid-cols-3"
+                        : "grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+                    }`}
+                >
                     {facility.facilityList.map(item => (
                         <div
                             key={item._id}
