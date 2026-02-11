@@ -27,10 +27,12 @@ export const verifyMail = async (token: string, email: string) => {
   });
 
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
+      pass: process.env.MAIL_PASS?.replace(/\s/g, ''), // removes spaces just in case
     },
   });
 
@@ -41,7 +43,7 @@ export const verifyMail = async (token: string, email: string) => {
     html: htmlToSend,
   };
 
-  transporter.sendMail(mailConfigurations, function (error, info) {
+  await transporter.sendMail(mailConfigurations, function (error, info) {
     if (error) {
       throw new Error(error.message);
     }

@@ -47,7 +47,7 @@ const bookingSchema = new Schema<IBooking>(
       min: 1,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 bookingSchema.index({ room: 1 });
@@ -55,12 +55,5 @@ bookingSchema.index({ user: 1 });
 bookingSchema.index({ status: 1 });
 bookingSchema.index({ checkIn: 1, checkOut: 1 });
 bookingSchema.index({ room: 1, status: 1, checkIn: 1, checkOut: 1 });
-
-bookingSchema.index({
-  room: 1,
-  status: 1,
-  checkIn: 1,
-  checkOut: 1,
-});
 
 export const Booking = mongoose.model<IBooking>('Booking', bookingSchema);
