@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IRoom extends Document {
   name: string;
   location: string;
+  description: string;
   size: number;
   bedroom: number;
   bathroom: number;
@@ -22,7 +23,7 @@ const roomSchema = new Schema<IRoom>(
   {
     name: { type: String, required: true },
     location: { type: String, required: true },
-
+    description: { type: String, default: '' },
     size: { type: Number, required: true },
     bedroom: { type: Number, required: true },
     bathroom: { type: Number, required: true },
@@ -43,7 +44,7 @@ const roomSchema = new Schema<IRoom>(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // indexes

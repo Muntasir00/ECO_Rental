@@ -2,9 +2,10 @@ import cloudinary from '../../config/cloudinary.js';
 import { Booking } from '../../models/booking.model.js';
 import { Room } from '../../models/room.model.js';
 import { IRoomImage } from '../../types/room.types.js';
+import { getFacilityByRoomService } from './facility.service.js';
 export const createRoomService = async (
   data: any,
-  files: Express.Multer.File[] = []
+  files: Express.Multer.File[] = [],
 ) => {
   if (!files.length) {
     throw new Error('Room images are required');
@@ -12,6 +13,7 @@ export const createRoomService = async (
   if (
     !data.name ||
     !data.location ||
+    !data.description ||
     !data.size ||
     !data.bedroom ||
     !data.bathroom ||
@@ -26,9 +28,9 @@ export const createRoomService = async (
     files.map(file =>
       cloudinary.uploader.upload(
         `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
-        { folder: 'rooms' }
-      )
-    )
+        { folder: 'rooms' },
+      ),
+    ),
   );
 
   const images = uploads.map(upload => ({
@@ -64,8 +66,14 @@ export const getAvailableRoomsService = async (page = 1, limit = 10) => {
   };
 };
 
-export const getRoomByIdService = (id: string) => {
-  return Room.findById(id);
+export const getRoomByIdService = async (id: string) => {
+  const room = await Room.findById(id);
+  if (!room) return null;
+  if (!room.hasFacility) {
+    return { room, facility: null };
+  }
+  const facility = await getFacilityByRoomService(id);
+  return { room, facility };
 };
 
 export const searchRoomsService = async (query: any) => {
@@ -102,7 +110,7 @@ export const searchRoomsService = async (query: any) => {
 export const updateRoomService = async (
   roomId: string,
   data: any,
-  files: Express.Multer.File[] = []
+  files: Express.Multer.File[] = [],
 ) => {
   const room = await Room.findById(roomId);
   if (!room) {
@@ -115,11 +123,11 @@ export const updateRoomService = async (
       : [data.removeImages];
 
     await Promise.all(
-      removeImages.map(publicId => cloudinary.uploader.destroy(publicId))
+      removeImages.map(publicId => cloudinary.uploader.destroy(publicId)),
     );
 
     room.images = room.images.filter(
-      (img: IRoomImage) => !removeImages.includes(img.publicId)
+      (img: IRoomImage) => !removeImages.includes(img.publicId),
     );
   }
 
@@ -128,9 +136,9 @@ export const updateRoomService = async (
       files.map(file =>
         cloudinary.uploader.upload(
           `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
-          { folder: 'rooms' }
-        )
-      )
+          { folder: 'rooms' },
+        ),
+      ),
     );
 
     const newImages: IRoomImage[] = uploads.map(upload => ({
@@ -156,8 +164,8 @@ export const deleteRoomService = async (roomId: string) => {
   if (room.images?.length) {
     await Promise.all(
       room.images.map((img: IRoomImage) =>
-        cloudinary.uploader.destroy(img.publicId)
-      )
+        cloudinary.uploader.destroy(img.publicId),
+      ),
     );
   }
 
