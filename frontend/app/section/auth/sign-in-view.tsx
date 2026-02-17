@@ -317,12 +317,12 @@ export function SignInView() {
                     </span>
                   </div>
 
-                  <div className='grid grid-cols-2 gap-4'>
+                  <div className='grid grid-cols-1 gap-4'>
                     {/* Google Button */}
                     <button
                       type='button'
                       onClick={handleGoogleSignIn}
-                      className='flex items-center justify-center gap-2 bg-[#FFD1D1] hover:bg-[#ffc2c2] text-[#5e4e4e] py-2.5 rounded-lg transition-colors font-medium text-sm'
+                      className='cursor-pointer flex items-center justify-center gap-2 bg-[#FFD1D1] hover:bg-[#ffc2c2] text-[#5e4e4e] py-2.5 rounded-lg transition-colors font-medium text-sm'
                     >
                       <svg className='w-4 h-4' viewBox='0 0 24 24'>
                         <path
@@ -346,19 +346,19 @@ export function SignInView() {
                     </button>
 
                     {/* Apple Button */}
-                    <button
-                      type='button'
-                      className='flex items-center justify-center gap-2 bg-[#FFD1D1] hover:bg-[#ffc2c2] text-[#5e4e4e] py-2.5 rounded-lg transition-colors font-medium text-sm'
-                    >
-                      <svg
-                        className='w-4 h-4 text-black'
-                        fill='currentColor'
-                        viewBox='0 0 24 24'
-                      >
-                        <path d='M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74 1.18 0 2.45-1.02 3.67-1.06.83-.03 2.62.2 3.86 1.93-3.23 1.88-2.69 6.26.65 7.67-.67 1.69-1.59 3.35-3.26 3.69zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z' />
-                      </svg>
-                      Apple
-                    </button>
+                    {/*<button*/}
+                    {/*  type='button'*/}
+                    {/*  className='cursor-pointer flex items-center justify-center gap-2 bg-[#FFD1D1] hover:bg-[#ffc2c2] text-[#5e4e4e] py-2.5 rounded-lg transition-colors font-medium text-sm'*/}
+                    {/*>*/}
+                    {/*  <svg*/}
+                    {/*    className='w-4 h-4 text-black'*/}
+                    {/*    fill='currentColor'*/}
+                    {/*    viewBox='0 0 24 24'*/}
+                    {/*  >*/}
+                    {/*    <path d='M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74 1.18 0 2.45-1.02 3.67-1.06.83-.03 2.62.2 3.86 1.93-3.23 1.88-2.69 6.26.65 7.67-.67 1.69-1.59 3.35-3.26 3.69zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z' />*/}
+                    {/*  </svg>*/}
+                    {/*  Apple*/}
+                    {/*</button>*/}
                   </div>
                 </div>
 
